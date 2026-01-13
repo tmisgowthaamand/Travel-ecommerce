@@ -24,9 +24,9 @@ const CategoryPage = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const url = category 
-        ? `${API_URL}/api/products?category=${category}`
-        : `${API_URL}/api/products`;
+      const url = category
+        ? `${API_URL}/products?category=${category}`
+        : `${API_URL}/products`;
       const response = await axios.get(url);
       setProducts(response.data);
     } catch (error) {
@@ -61,7 +61,7 @@ const CategoryPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <ShopHeader />
-      
+
       {/* Hero */}
       <section className="pt-24 pb-8 bg-gradient-to-b from-amber-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

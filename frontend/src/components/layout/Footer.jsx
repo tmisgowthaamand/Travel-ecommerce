@@ -4,105 +4,87 @@ import { MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Twitter } from 'luc
 
 const Footer = () => {
   return (
-    <footer className="bg-[#3D2E2E] text-white">
-      {/* Partners Section */}
-      <div className="border-b border-white/10 py-10">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60">
-            <span className="text-sm tracking-[0.3em] font-light">VIRTUOSO</span>
-            <span className="text-sm tracking-[0.3em] font-light">TRAVEL + LEISURE</span>
-            <span className="text-sm tracking-[0.3em] font-light">CONDÉ NAST</span>
-            <span className="text-sm tracking-[0.3em] font-light">RELAIS & CHÂTEAUX</span>
-            <span className="text-sm tracking-[0.3em] font-light">SELECT HOTELS</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Footer */}
-      <div className="py-16">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {/* About Column */}
-            <div className="space-y-6">
-              <h2 className="font-serif text-3xl tracking-wide">
-                <span className="font-light">W</span>
-                <span className="text-2xl">&</span>
-                <span className="font-light">C</span>
+    <footer className="bg-[#1A1A1A] text-white pt-24 pb-12">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 mb-24">
+          {/* Brand Column */}
+          <div className="lg:col-span-4 space-y-10">
+            <Link to="/travel" className="inline-block">
+              <h2 className="font-serif text-3xl tracking-tighter flex items-baseline gap-1">
+                <span className="font-light italic">Wanderlust</span>
+                <span className="text-[#C9A87C]">&</span>
+                <span className="font-light">Co.</span>
               </h2>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Creating magical memories through bespoke luxury travel experiences across Ireland, Scotland, England, and Africa.
-              </p>
-              <div className="flex gap-4">
-                <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">
-                  <Facebook className="w-4 h-4" />
-                </a>
-                <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a href="#" className="p-2 border border-white/20 rounded-full hover:bg-white/10 transition-colors">
-                  <Twitter className="w-4 h-4" />
-                </a>
+            </Link>
+            <p className="text-white/40 text-sm leading-relaxed max-w-sm font-light italic">
+              "To travel is to live, to return is to be reborn." We craft sanctuaries for the soul through meticulously curated bespoke journeys.
+            </p>
+            <div className="flex gap-6">
+              <a href="#" className="text-white/30 hover:text-[#C9A87C] transition-colors">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-white/30 hover:text-[#C9A87C] transition-colors">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="text-white/30 hover:text-[#C9A87C] transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Nav Columns */}
+          <div className="lg:col-span-2 space-y-8">
+            <h3 className="text-[10px] tracking-[0.4em] font-black text-[#C9A87C] uppercase">Explore</h3>
+            <ul className="space-y-4">
+              <li><Link to="/travel/experiences" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">EXPERIENCES</Link></li>
+              <li><Link to="/travel/destinations" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">DESTINATIONS</Link></li>
+              <li><Link to="/travel/rentals" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">RENTALS</Link></li>
+              <li><Link to="/shop" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">COLLECTIONS</Link></li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-2 space-y-8">
+            <h3 className="text-[10px] tracking-[0.4em] font-black text-[#C9A87C] uppercase">Company</h3>
+            <ul className="space-y-4">
+              <li><Link to="/travel/about" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">OUR STORY</Link></li>
+              <li><Link to="/travel/blog" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">JOURNAL</Link></li>
+              <li><Link to="/travel/contact" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">CONTACT</Link></li>
+              <li><Link to="/travel/about" className="text-white/40 text-[10px] tracking-widest hover:text-white transition-colors font-bold">CAREERS</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Column */}
+          <div className="lg:col-span-4 space-y-8">
+            <h3 className="text-[10px] tracking-[0.4em] font-black text-[#C9A87C] uppercase">Contact</h3>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <MapPin className="w-5 h-5 text-[#C9A87C] flex-shrink-0" />
+                <p className="text-white/40 text-xs leading-relaxed font-light">
+                  42 Fitzwilliam Square South,<br />
+                  Dublin 2, D02 Y620, Ireland
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Phone className="w-5 h-5 text-[#C9A87C] flex-shrink-0" />
+                <p className="text-white/40 text-xs font-light">+353 1 288 6355</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Mail className="w-5 h-5 text-[#C9A87C] flex-shrink-0" />
+                <p className="text-white/40 text-xs font-light">concierge@wanderlustco.com</p>
               </div>
             </div>
-
-            {/* Quick Links */}
-            <div className="space-y-6">
-              <h3 className="text-xs tracking-[0.3em] font-medium">EXPLORE</h3>
-              <ul className="space-y-3">
-                <li><Link to="/experiences" className="text-white/70 text-sm hover:text-white transition-colors">Tailored Experiences</Link></li>
-                <li><Link to="/destinations" className="text-white/70 text-sm hover:text-white transition-colors">Destinations</Link></li>
-                <li><Link to="/rentals" className="text-white/70 text-sm hover:text-white transition-colors">Private Rentals</Link></li>
-                <li><Link to="/about" className="text-white/70 text-sm hover:text-white transition-colors">About Us</Link></li>
-                <li><Link to="/blog" className="text-white/70 text-sm hover:text-white transition-colors">Blog & Press</Link></li>
-              </ul>
-            </div>
-
-            {/* Destinations */}
-            <div className="space-y-6">
-              <h3 className="text-xs tracking-[0.3em] font-medium">DESTINATIONS</h3>
-              <ul className="space-y-3">
-                <li><Link to="/destinations/ireland" className="text-white/70 text-sm hover:text-white transition-colors">Ireland</Link></li>
-                <li><Link to="/destinations/scotland" className="text-white/70 text-sm hover:text-white transition-colors">Scotland</Link></li>
-                <li><Link to="/destinations/england" className="text-white/70 text-sm hover:text-white transition-colors">England</Link></li>
-                <li><Link to="/destinations/africa" className="text-white/70 text-sm hover:text-white transition-colors">Africa</Link></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div className="space-y-6">
-              <h3 className="text-xs tracking-[0.3em] font-medium">GET IN TOUCH</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-[#C9A87C]" />
-                  <span className="text-white/70 text-sm">42 Fitzwilliam Square,<br />Dublin 2, Ireland</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 flex-shrink-0 text-[#C9A87C]" />
-                  <span className="text-white/70 text-sm">+353 1 288 6355</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 flex-shrink-0 text-[#C9A87C]" />
-                  <span className="text-white/70 text-sm">info@wanderlustco.com</span>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/10 py-6">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-white/50 text-xs">
-            <p>© 2025 Wanderlust & Co. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link to="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
-            </div>
+        {/* Bottom Bar */}
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+          <p className="text-[9px] tracking-[0.3em] text-white/20 font-bold uppercase">
+            © 2025 WANDERLUST & CO. ALL RIGHTS RESERVED.
+          </p>
+          <div className="flex gap-10">
+            <Link to="/privacy" className="text-[9px] tracking-[0.3em] text-white/20 hover:text-white transition-colors font-bold uppercase">Privacy</Link>
+            <Link to="/terms" className="text-[9px] tracking-[0.3em] text-white/20 hover:text-white transition-colors font-bold uppercase">Terms</Link>
+            <Link to="/cookies" className="text-[9px] tracking-[0.3em] text-white/20 hover:text-white transition-colors font-bold uppercase">Cookies</Link>
           </div>
         </div>
       </div>

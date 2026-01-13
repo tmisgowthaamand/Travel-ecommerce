@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { Plane, ShoppingBag, Calendar, MapPin, Users, Package, ArrowLeft, Loader2, Clock, CheckCircle, Trash2 } from 'lucide-react';
+import { Plane, ShoppingBag, Calendar, Users, Package, ArrowLeft, Loader2, Clock, CheckCircle, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import Footer from '../components/layout/Footer';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -24,26 +25,26 @@ const MyBookingsPage = () => {
 
   const fetchActivity = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/my-activity`);
+      const response = await axios.get(`${API_URL}/my-activity`);
       setActivity(response.data);
     } catch (error) {
       console.error('Failed to fetch activity:', error);
-      toast.error('Failed to load your bookings and orders');
+      toast.error('Failed to load your records');
     } finally {
       setLoading(false);
     }
   };
 
   const handleCancelBooking = async (bookingId) => {
-    if (!window.confirm('Are you sure you want to cancel this booking?')) return;
-    
+    if (!window.confirm('Are you sure you want to cancel this journey?')) return;
+
     try {
-      await axios.delete(`${API_URL}/api/bookings/${bookingId}`);
-      toast.success('Booking cancelled successfully');
+      await axios.delete(`${API_URL}/bookings/${bookingId}`);
+      toast.success('Journey cancelled successfully');
       fetchActivity();
     } catch (error) {
       console.error('Failed to cancel booking:', error);
-      toast.error('Failed to cancel booking');
+      toast.error('Failed to cancel journey');
     }
   };
 
@@ -70,248 +71,157 @@ const MyBookingsPage = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/" className="text-gray-600 hover:text-gray-900">
+      <header className="bg-[#1A1A1A] text-white py-12 px-6 lg:px-12">
+        <div className="max-w-[1600px] mx-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="flex items-center gap-8">
+              <Link to="/" className="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-[#C9A87C] hover:border-[#C9A87C] transition-all">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">My Bookings & Orders</h1>
-                <p className="text-gray-600">Welcome back, {user?.name}</p>
+                <p className="text-[#C9A87C] text-[10px] tracking-[0.5em] mb-2 font-black uppercase">Your Gallery</p>
+                <h1 className="font-serif text-4xl font-light italic">The Personal Log</h1>
+                <p className="text-white/40 text-xs tracking-widest mt-2 uppercase">Curating for {user?.name}</p>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-6">
               <Link
                 to="/travel"
-                className="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-lg font-medium hover:bg-emerald-200 transition-colors flex items-center gap-2"
+                className="px-8 py-3 bg-[#C9A87C] text-[#1A1A1A] text-[10px] tracking-[0.3em] font-black hover:bg-white transition-all uppercase"
               >
-                <Plane className="w-4 h-4" />
-                Book Travel
+                Plan Journey
               </Link>
               <Link
                 to="/shop"
-                className="px-4 py-2 bg-amber-100 text-amber-700 rounded-lg font-medium hover:bg-amber-200 transition-colors flex items-center gap-2"
+                className="px-8 py-3 border border-white/20 text-white text-[10px] tracking-[0.3em] font-black hover:bg-white hover:text-[#1A1A1A] transition-all uppercase"
               >
-                <ShoppingBag className="w-4 h-4" />
-                Shop Gear
+                Refine Gear
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                <Plane className="w-6 h-6 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{activity.total_bookings}</p>
-                <p className="text-sm text-gray-500">Travel Bookings</p>
-              </div>
+      <main className="max-w-[1600px] mx-auto px-6 lg:px-12 py-24">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 border border-gray-100 mb-24">
+          {[
+            { label: 'Residencies', value: activity.total_bookings, icon: Plane },
+            { label: 'Provisions', value: activity.total_orders, icon: Package },
+            { label: 'Confirmed', value: activity.bookings.filter(b => b.status === 'confirmed').length + activity.orders.filter(o => o.status === 'confirmed').length, icon: CheckCircle },
+            { label: 'Awaiting', value: activity.bookings.filter(b => b.status === 'pending').length + activity.orders.filter(o => o.status === 'pending').length, icon: Clock },
+          ].map((stat, i) => (
+            <div key={i} className="bg-white p-12 text-center group hover:bg-[#F8F5F2] transition-colors">
+              <stat.icon className="w-6 h-6 text-[#C9A87C] mx-auto mb-6" />
+              <p className="text-4xl font-serif text-[#1A1A1A] italic mb-2">{stat.value}</p>
+              <p className="text-[10px] tracking-[0.3em] text-gray-400 font-bold uppercase">{stat.label}</p>
             </div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                <Package className="w-6 h-6 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{activity.total_orders}</p>
-                <p className="text-sm text-gray-500">Product Orders</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {activity.bookings.filter(b => b.status === 'confirmed').length + 
-                   activity.orders.filter(o => o.status === 'confirmed').length}
-                </p>
-                <p className="text-sm text-gray-500">Confirmed</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                <Clock className="w-6 h-6 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {activity.bookings.filter(b => b.status === 'pending').length +
-                   activity.orders.filter(o => o.status === 'pending').length}
-                </p>
-                <p className="text-sm text-gray-500">Pending</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-6">
+        {/* Tab Selection */}
+        <div className="flex justify-center gap-12 mb-24 border-b border-gray-100">
           {[
-            { id: 'all', label: 'All Activity' },
-            { id: 'bookings', label: 'Travel Bookings' },
-            { id: 'orders', label: 'Product Orders' }
+            { id: 'all', label: 'Compendium' },
+            { id: 'bookings', label: 'Journeys' },
+            { id: 'orders', label: 'Acquisitions' }
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all ${
-                activeTab === tab.id
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
-              }`}
+              className={`pb-8 text-[10px] tracking-[0.5em] font-black uppercase transition-all relative ${activeTab === tab.id ? 'text-[#C9A87C]' : 'text-gray-300 hover:text-[#1A1A1A]'
+                }`}
             >
               {tab.label}
+              {activeTab === tab.id && <div className="absolute bottom-0 left-0 w-full h-1 bg-[#C9A87C]" />}
             </button>
           ))}
         </div>
 
-        {/* Activity List */}
+        {/* Dynamic Activity List */}
         {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+          <div className="flex flex-col items-center justify-center py-24 gap-6">
+            <Loader2 className="w-12 h-12 animate-spin text-[#C9A87C]" />
+            <p className="text-[10px] tracking-[0.5em] text-gray-400 font-black uppercase">Synchronizing Records...</p>
           </div>
         ) : allItems.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Package className="w-10 h-10 text-gray-400" />
-            </div>
-            <h2 className="text-xl font-medium text-gray-900 mb-2">No activity yet</h2>
-            <p className="text-gray-500 mb-8">Start exploring and booking your next adventure!</p>
-            <div className="flex justify-center gap-4">
-              <Link
-                to="/travel"
-                className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-colors"
-              >
-                Explore Travel
-              </Link>
-              <Link
-                to="/shop"
-                className="px-6 py-3 bg-amber-600 text-white rounded-xl font-medium hover:bg-amber-700 transition-colors"
-              >
-                Shop Gear
-              </Link>
-            </div>
+          <div className="text-center py-32 border-2 border-dashed border-gray-100">
+            <h2 className="font-serif text-3xl text-[#1A1A1A] italic mb-4">A blank canvas</h2>
+            <p className="text-gray-400 font-light italic mb-12">Your history of exploration is waiting to be written.</p>
+            <Link
+              to="/travel"
+              className="inline-block px-12 py-6 bg-[#1A1A1A] text-white text-[10px] tracking-[0.4em] font-black hover:bg-[#C9A87C] transition-all uppercase"
+            >
+              Begin the Narrative
+            </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-16">
             {allItems.map((item) => (
-              <div key={`${item.type}-${item.id}`} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                {item.type === 'booking' ? (
-                  // Travel Booking Card
-                  <div className="flex gap-6">
-                    <div className="w-32 h-32 rounded-xl overflow-hidden flex-shrink-0">
-                      <img
-                        src={item.item_image}
-                        alt={item.item_name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <span className="inline-flex items-center gap-1 px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full mb-2">
-                            <Plane className="w-3 h-3" />
-                            Travel Booking
-                          </span>
-                          <h3 className="text-lg font-semibold text-gray-900">{item.item_name}</h3>
-                          <p className="text-gray-500 capitalize">{item.booking_type}</p>
+              <div key={`${item.type}-${item.id}`} className="group relative">
+                <div className="grid lg:grid-cols-12 gap-12 items-center">
+                  {item.type === 'booking' ? (
+                    <>
+                      <div className="lg:col-span-3 aspect-square overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
+                        <img src={item.item_image} alt={item.item_name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="lg:col-span-6 space-y-4">
+                        <div className="flex items-center gap-6">
+                          <span className="text-[#C9A87C] text-[10px] tracking-[0.3em] font-black uppercase italic">Journeys</span>
+                          <div className="w-8 h-[1px] bg-gray-200" />
+                          <span className={`text-[9px] tracking-[0.2em] font-black uppercase ${item.status === 'confirmed' ? 'text-green-500' : 'text-amber-500'}`}>{item.status}</span>
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          item.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                          item.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {item.status}
-                        </span>
+                        <h3 className="font-serif text-3xl text-[#1A1A1A] italic font-light">{item.item_name}</h3>
+                        <div className="flex gap-12 text-[10px] tracking-[0.15em] font-bold text-gray-400 uppercase">
+                          <span className="flex items-center gap-3"><Calendar className="w-3 h-3 text-[#C9A87C]" /> {formatDate(item.start_date)}</span>
+                          <span className="flex items-center gap-3"><Users className="w-3 h-3 text-[#C9A87C]" /> {item.guests} Guests</span>
+                        </div>
                       </div>
-                      <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {formatDate(item.start_date)}
-                          {item.end_date && ` - ${formatDate(item.end_date)}`}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          {item.guests} guest{item.guests > 1 ? 's' : ''}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                        <span className="text-lg font-bold text-gray-900">
-                          ${item.total_price.toLocaleString()}
-                        </span>
+                      <div className="lg:col-span-3 text-right space-y-6">
+                        <p className="font-serif text-2xl text-[#1A1A1A] italic">${item.total_price.toLocaleString()}</p>
                         <button
                           onClick={() => handleCancelBooking(item.id)}
-                          className="text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-1"
+                          className="text-red-300 hover:text-red-500 text-[9px] tracking-[0.3em] font-black uppercase transition-colors"
                         >
-                          <Trash2 className="w-4 h-4" />
-                          Cancel Booking
+                          Revoke Request
                         </button>
                       </div>
-                    </div>
-                  </div>
-                ) : (
-                  // Product Order Card
-                  <div>
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full mb-2">
-                          <Package className="w-3 h-3" />
-                          Product Order
-                        </span>
-                        <h3 className="text-lg font-semibold text-gray-900">Order #{item.id.slice(0, 8)}</h3>
-                        <p className="text-gray-500">{formatDate(item.created_at)}</p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="lg:col-span-3 grid grid-cols-2 gap-2 aspect-square">
+                        {item.items.slice(0, 4).map((orderItem, idx) => (
+                          <div key={idx} className="aspect-square grayscale group-hover:grayscale-0 transition-all duration-1000">
+                            <img src={orderItem.product_image} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        ))}
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        item.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                        item.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
-                        {item.status}
-                      </span>
-                    </div>
-                    <div className="flex gap-3 overflow-x-auto pb-2">
-                      {item.items.map((orderItem, idx) => (
-                        <div key={idx} className="flex-shrink-0 w-20">
-                          <img
-                            src={orderItem.product_image}
-                            alt={orderItem.product_name}
-                            className="w-20 h-20 object-cover rounded-lg"
-                          />
-                          <p className="text-xs text-gray-500 mt-1 truncate">{orderItem.product_name}</p>
-                          <p className="text-xs font-medium">x{orderItem.quantity}</p>
+                      <div className="lg:col-span-6 space-y-4">
+                        <div className="flex items-center gap-6">
+                          <span className="text-gray-400 text-[10px] tracking-[0.3em] font-black uppercase">Acquisitions</span>
+                          <div className="w-8 h-[1px] bg-gray-200" />
+                          <span className={`text-[9px] tracking-[0.2em] font-black uppercase ${item.status === 'confirmed' ? 'text-green-500' : 'text-amber-500'}`}>{item.status}</span>
                         </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                      <div className="text-sm text-gray-600">
-                        <p>Shipping to: {item.shipping_address?.city}, {item.shipping_address?.state}</p>
+                        <h3 className="font-serif text-3xl text-[#1A1A1A] italic font-light">Order #{item.id.slice(0, 8)}</h3>
+                        <p className="text-[10px] tracking-[0.15em] font-bold text-gray-400 uppercase">Registered on {formatDate(item.created_at)}</p>
                       </div>
-                      <span className="text-lg font-bold text-gray-900">
-                        ${item.total.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-                )}
+                      <div className="lg:col-span-3 text-right space-y-6">
+                        <p className="font-serif text-2xl text-[#1A1A1A] italic">${item.total.toFixed(2)}</p>
+                        <p className="text-[9px] tracking-[0.2em] text-gray-300 font-bold uppercase">To be delivered to {item.shipping_address?.city}</p>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className="mt-16 w-full h-[1px] bg-gray-100" />
               </div>
             ))}
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 };

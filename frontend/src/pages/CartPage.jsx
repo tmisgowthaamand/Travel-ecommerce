@@ -12,7 +12,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 const CartPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { cart, updateQuantity, removeFromCart, loading } = useCart();
+  const { cart, updateQuantity, removeFromCart, clearCart, fetchCart, loading } = useCart();
   const [checkingOut, setCheckingOut] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
@@ -39,11 +39,12 @@ const CartPage = () => {
   const handleCheckout = async (e) => {
     e.preventDefault();
     setCheckingOut(true);
-    
+
     try {
-      await axios.post(`${API_URL}/api/orders`, {
+      await axios.post(`${API_URL}/orders`, {
         shipping_address: shippingInfo
       });
+      await fetchCart();
       toast.success('Order placed successfully!');
       navigate('/my-bookings');
     } catch (error) {
@@ -84,11 +85,11 @@ const CartPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <ShopHeader />
-      
+
       <div className="pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
-          
+
           {cart.items.length === 0 ? (
             <div className="text-center py-16">
               <ShoppingBag className="w-20 h-20 text-gray-300 mx-auto mb-6" />
@@ -123,7 +124,7 @@ const CartPage = () => {
                           </h3>
                         </Link>
                         <p className="text-amber-600 font-medium mt-1">${item.price}</p>
-                        
+
                         <div className="flex items-center justify-between mt-4">
                           <div className="flex items-center border border-gray-200 rounded-lg">
                             <button
@@ -154,7 +155,7 @@ const CartPage = () => {
                     </div>
                   </div>
                 ))}
-                
+
                 <Link
                   to="/shop"
                   className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium mt-4"
@@ -168,7 +169,7 @@ const CartPage = () => {
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-2xl p-6 shadow-sm sticky top-24">
                   <h2 className="text-lg font-bold text-gray-900 mb-6">Order Summary</h2>
-                  
+
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal ({cart.item_count} items)</span>

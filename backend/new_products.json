@@ -1,0 +1,392 @@
+[
+    {
+        "name": "Safari Hue 8 Wheels 55 Cms Small Cabin Trolley Bag",
+        "price": 23.30,
+        "description": "Stylish and compact, the Safari Hue features 8-wheel agility and a durable lightweight shell, making it the perfect cabin companion for short trips and weekend getaways.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "safari",
+            "cabin",
+            "8-wheels"
+        ]
+    },
+    {
+        "name": "Aristocrat Comet Cabin Trolley Bag",
+        "price": 16.52,
+        "description": "A reliable and budget-friendly cabin bag with a sleek design. The Aristocrat Comet offers ample storage space and smooth-rolling wheels for easy maneuverability.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "aristocrat",
+            "cabin",
+            "budget"
+        ]
+    },
+    {
+        "name": "Mokobara The Transit Cabin Luggage",
+        "price": 26.63,
+        "description": "Modern aesthetics meet functional design. The Mokobara Transit features a premium hardshell, whisper-quiet wheels, and a built-in USB port for charging on the move.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "mokobara",
+            "premium",
+            "tech"
+        ]
+    },
+    {
+        "name": "Safari Accent 8 Wheel Hard Cabin Trolley Suitcase",
+        "price": 16.64,
+        "description": "Bold colors and tough build define the Safari Accent. With its 8-wheel system and reinforced corners, it's designed to withstand the rigors of frequent travel.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1565058778-958b44400e96?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "safari",
+            "hardshell",
+            "durable"
+        ]
+    },
+    {
+        "name": "Nasher Miles Vienna Hard-Sided Cabin Luggage Trolley Bag",
+        "price": 29.60,
+        "description": "Inspired by European elegance, the Nasher Miles Vienna combines sophisticated style with light-weight performance and top-tier security features.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "nasher miles",
+            "luxury",
+            "vienna"
+        ]
+    },
+    {
+        "name": "Skybags Stroke Medium Hard Luggage Trolley",
+        "price": 28.07,
+        "description": "A medium-sized powerhouse with a unique 'stroke' design. Perfect for week-long trips, offering expanded capacity and a scratch-resistant finish.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1518685160868-e6d30277bd22?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "skybags",
+            "medium",
+            "hardshell"
+        ]
+    },
+    {
+        "name": "Skybags Skylite Hard Sided Large Trolley Bag",
+        "price": 63.71,
+        "description": "Maximize your packing with the Skylite Large. Despite its size, it remains remarkably light, featuring 360-degree rotation and advanced TSA-approved locks.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "skybags",
+            "large",
+            "skylite"
+        ]
+    },
+    {
+        "name": "Skybags FLOAT Hard Trolley Luggage",
+        "price": 62.15,
+        "description": "Engineered for effortless travel, the Skybags FLOAT glides like it's in the air. Its ultra-modern design is paired with high-impact resistance for peace of mind.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "skybags",
+            "float",
+            "smooth"
+        ]
+    },
+    {
+        "name": "Skybags Float Check-in Trolley Hard Luggage",
+        "price": 44.39,
+        "description": "The check-in version of the FLOAT series, offering the same sleek aesthetics and effortless glide in a size suited for longer international adventures.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "skybags",
+            "check-in",
+            "large"
+        ]
+    },
+    {
+        "name": "Skybags Cityscape",
+        "price": 47.72,
+        "description": "Designed for the urban explorer. The Cityscape range blends professional looks with travel-ready utility, featuring smart internal organization.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1590845947698-8924d7409b56?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "skybags",
+            "cityscape",
+            "urban"
+        ]
+    },
+    {
+        "name": "Skybags Oscar Spinner Hard Trolley",
+        "price": 51.28,
+        "description": "Standing out with its vibrant design, the Oscar Spinner is as tough as it is stylish. Features an ergonomic grip handle and smooth dual-wheels.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "skybags",
+            "oscar",
+            "spinner"
+        ]
+    },
+    {
+        "name": "Skybags Cityscape Cabin Trolley Suitcase",
+        "price": 47.72,
+        "description": "The cabin-sized variant of the Cityscape, perfect for short business trips where style and efficiency are paramount.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1565058778-958b44400e96?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "skybags",
+            "cabin",
+            "business"
+        ]
+    },
+    {
+        "name": "HRX Grit Laptop Cabin Suitcase",
+        "price": 28.85,
+        "description": "Built for the active professional, this HRX suitcase features a dedicated front laptop compartment for quick security access and a rugged, sporty finish.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "hrx",
+            "laptop",
+            "sporty"
+        ]
+    },
+    {
+        "name": "Aristocrat Small Cabin Suitcase",
+        "price": 16.52,
+        "description": "Minimalist and highly functional, this small cabin bag is designed for maximum overhead bin compatibility without sacrificing internal space.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "aristocrat",
+            "compact",
+            "cabin"
+        ]
+    },
+    {
+        "name": "HRX Medium Check-in Suitcase",
+        "price": 22.74,
+        "description": "Combining sports-inspired durability with spacious design, the HRX Medium Check-in is perfect for the adventurous traveler who needs extra room and reliability.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "hrx",
+            "medium",
+            "adventure"
+        ]
+    },
+    {
+        "name": "MOVE-MEANT Large Check-in Suitcase (75 cm)",
+        "price": 66.59,
+        "description": "A massive suitcase for extensive travel. The MOVE-MEANT series focuses on volume and strength, ensuring your belongings stay safe even on long-haul flights.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1518685160868-e6d30277bd22?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "move-meant",
+            "large",
+            "sturdy"
+        ]
+    },
+    {
+        "name": "HRX Hard Body Set of 2 Luggage",
+        "price": 37.61,
+        "description": "Double the value with two premium hard-bodied suitcases. This set includes a cabin and a medium check-in bag, perfect for all your travel needs.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1565058778-958b44400e96?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "hrx",
+            "set",
+            "value"
+        ]
+    },
+    {
+        "name": "Safari Foxe Hard Body Set of 2",
+        "price": 38.27,
+        "description": "A matching set of two Safari Foxe suitcases. Known for their iconic textured shell and extreme durability, this set covers both short and long trips.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "safari",
+            "set",
+            "foxe"
+        ]
+    },
+    {
+        "name": "Aristocrat Large Check-in Suitcase (76 cm)",
+        "price": 26.41,
+        "description": "Get maximum storage at a great price. Aristocrat's large check-in suitcase is lightweight yet sturdy, featuring a classic design that never goes out of style.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "aristocrat",
+            "large",
+            "value"
+        ]
+    },
+    {
+        "name": "YAYAVAR Medium Check-in Suitcase",
+        "price": 22.42,
+        "description": "A versatile medium-sized bag with a focus on ease of movement and modern aesthetics. YAYAVAR combines style with practical travel features.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "yayavar",
+            "medium",
+            "style"
+        ]
+    },
+    {
+        "name": "Aristocrat Hard Body Set of 2",
+        "price": 34.95,
+        "description": "Upgrade your travel gear with this set of two Aristocrat hard-bodied suitcases. Durable, smooth-rolling, and perfectly sized for any journey.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1590845947698-8924d7409b56?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "aristocrat",
+            "set",
+            "hardbody"
+        ]
+    },
+    {
+        "name": "ALFA by VIP Small Cabin",
+        "price": 13.97,
+        "description": "The perfect entry-level cabin bag from the trusted House of VIP. Simple, effective, and built to meet all standard airline requirements.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "alfa",
+            "vip",
+            "budget"
+        ]
+    },
+    {
+        "name": "HRX Hard Body Set of 3",
+        "price": 62.70,
+        "description": "The ultimate travel solution. A complete 3-piece set from HRX featuring small, medium, and large suitcases to handle any itinerary imaginable.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1565058778-958b44400e96?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "hrx",
+            "set",
+            "complete"
+        ]
+    },
+    {
+        "name": "Safari Magnum Zeno Set of 3",
+        "price": 56.04,
+        "description": "A premium 3-piece set from the Magnum Zeno range. Features top-tier build quality, extra security, and a professional look for the whole family.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "safari",
+            "magnum",
+            "set"
+        ]
+    },
+    {
+        "name": "Safari Eclipse Neo 66 Check-in",
+        "price": 26.07,
+        "description": "Modern and edgy, the Eclipse Neo 66 offers a unique shell texture that resists scratches. A solid choice for medium-duration trips.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1518685160868-e6d30277bd22?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "safari",
+            "eclipse",
+            "neo"
+        ]
+    },
+    {
+        "name": "Safari Eclipse Neo 55 Cabin",
+        "price": 20.53,
+        "description": "The cabin version of the Eclipse Neo. Features the same scratch-resistant tech in a size that fits comfortably in overhead lockers.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581605405669-fcdf81165afa?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "safari",
+            "cabin",
+            "eclipse"
+        ]
+    },
+    {
+        "name": "Kamiliant Small Cabin",
+        "price": 17.20,
+        "description": "Stand out with Kamiliant's vibrant colors and unique textures. Durable, lightweight, and fun—perfect for the young-at-heart traveler.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "kamiliant",
+            "vibrant",
+            "cabin"
+        ]
+    },
+    {
+        "name": "Kamiliant Combination Lock Cabin",
+        "price": 17.20,
+        "description": "Focusing on security, this Kamiliant cabin bag features an integrated combination lock while maintaining the brand's signature bold style.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "kamiliant",
+            "security",
+            "cabin"
+        ]
+    },
+    {
+        "name": "Roamx Metrolite Check-in Suitcase",
+        "price": 18.86,
+        "description": "Ultra-lightweight and metropolitan in design. The Roamx Metrolite is built for speed and efficiency during check-in and transit.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1590845947698-8924d7409b56?w=800&q=80",
+        "featured": false,
+        "tags": [
+            "roamx",
+            "lightweight",
+            "check-in"
+        ]
+    },
+    {
+        "name": "Killer Hard Sided Spinner Expandable Cabin",
+        "price": 14.98,
+        "description": "An expandable cabin bag that doesn't compromise on strength. Features a hard-sided shell with spinner wheels for ultimate versatility.",
+        "category": "luggage",
+        "image": "https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80",
+        "featured": true,
+        "tags": [
+            "killer",
+            "expandable",
+            "cabin"
+        ]
+    }
+]

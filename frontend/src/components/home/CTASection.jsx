@@ -22,144 +22,140 @@ const CTASection = () => {
   };
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
-      {/* Background Image */}
+    <section className="relative py-32 lg:py-48 overflow-hidden bg-[#1A1A1A]">
+      {/* Background with Subtle Parallax Effect (via CSS) */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover bg-center grayscale opacity-30 scale-110"
         style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1516570628389-492e1488089d?w=1920&q=80)' }}
       />
-      <div className="absolute inset-0 bg-[#3D2E2E]/85" />
 
       <div className="relative max-w-[1600px] mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
           {/* Content */}
-          <div className="text-white">
-            <p className="text-xs tracking-[0.3em] text-[#C9A87C] mb-4">BEGIN YOUR JOURNEY</p>
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mb-6">
-              Plan Your Dream<br />Adventure
+          <div className="text-white lg:sticky lg:top-32">
+            <p className="text-[#C9A87C] text-xs tracking-[0.4em] mb-8 uppercase font-bold">The Consultation</p>
+            <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl font-light mb-10 leading-[1.1]">
+              Start Your <br /><span className="italic">Odyssey</span>
             </h2>
-            <p className="text-white/80 text-lg leading-relaxed mb-8">
-              Let our travel experts craft a bespoke itinerary tailored to your desires. From castle stays to safari adventures, we'll create memories that last a lifetime.
+            <div className="w-24 h-[1px] bg-[#C9A87C] mb-12" />
+            <p className="text-white/50 text-xl font-light leading-relaxed mb-16 max-w-xl">
+              Let our travel artisans craft a bespoke sanctuary for your next journey. Every detail, from private transit to exclusive access, is meticulously curated to reflect your unique vision.
             </p>
 
-            <div className="grid grid-cols-3 gap-6">
-              <div className="text-center p-6 border border-white/10 rounded-sm">
-                <p className="font-serif text-4xl text-[#C9A87C] mb-2">25+</p>
-                <p className="text-xs tracking-[0.15em] text-white/60">YEARS EXPERIENCE</p>
+            <div className="space-y-10">
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[#C9A87C] group-hover:bg-[#C9A87C] group-hover:text-[#1A1A1A] transition-all duration-500">
+                  <span className="font-serif italic text-xl">1</span>
+                </div>
+                <div>
+                  <h4 className="font-serif text-xl mb-1 font-light">Discovery Call</h4>
+                  <p className="text-sm text-white/40 font-light">We begin with a deep dive into your travel aspirations and preferred pace.</p>
+                </div>
               </div>
-              <div className="text-center p-6 border border-white/10 rounded-sm">
-                <p className="font-serif text-4xl text-[#C9A87C] mb-2">250+</p>
-                <p className="text-xs tracking-[0.15em] text-white/60">EXCLUSIVE PROPERTIES</p>
-              </div>
-              <div className="text-center p-6 border border-white/10 rounded-sm">
-                <p className="font-serif text-4xl text-[#C9A87C] mb-2">98%</p>
-                <p className="text-xs tracking-[0.15em] text-white/60">CLIENT SATISFACTION</p>
+              <div className="flex items-start gap-6 group">
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-[#C9A87C] group-hover:bg-[#C9A87C] group-hover:text-[#1A1A1A] transition-all duration-500">
+                  <span className="font-serif italic text-xl">2</span>
+                </div>
+                <div>
+                  <h4 className="font-serif text-xl mb-1 font-light">Bespoke Design</h4>
+                  <p className="text-sm text-white/40 font-light">Our experts draft a unique itinerary with exclusive experiences hidden from the public eye.</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="bg-white p-8 lg:p-10 rounded-sm shadow-2xl">
-            <h3 className="font-serif text-2xl text-[#6B4E4E] mb-6">Request a Consultation</h3>
-            
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">YOUR NAME</label>
+          {/* Form Card */}
+          <div className="bg-white p-12 lg:p-16 relative">
+            {/* Corner Accents */}
+            <div className="absolute top-0 right-0 w-24 h-24 border-t border-r border-[#C9A87C]/20" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 border-b border-l border-[#C9A87C]/20" />
+
+            <h3 className="font-serif text-3xl text-[#6B4E4E] mb-10 font-light italic text-center">Inquiry for Excellence</h3>
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="space-y-8">
+                <div className="relative group">
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors"
-                    placeholder="John Smith"
+                    className="w-full bg-transparent border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-[#C9A87C] transition-colors peer placeholder:text-transparent"
+                    placeholder="Full Name"
                   />
+                  <label className="absolute left-0 top-4 text-[10px] tracking-[0.2em] text-gray-400 uppercase transition-all duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-[-10px] peer-focus:text-[10px] peer-focus:text-[#C9A87C] font-bold">
+                    Full Name
+                  </label>
                 </div>
-                <div>
-                  <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">EMAIL ADDRESS</label>
+
+                <div className="relative group">
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors"
-                    placeholder="john@example.com"
+                    className="w-full bg-transparent border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-[#C9A87C] transition-colors peer placeholder:text-transparent"
+                    placeholder="Email Address"
                   />
+                  <label className="absolute left-0 top-4 text-[10px] tracking-[0.2em] text-gray-400 uppercase transition-all duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-[-10px] peer-focus:text-[10px] peer-focus:text-[#C9A87C] font-bold">
+                    Email Address
+                  </label>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">PREFERRED DESTINATION</label>
-                <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <select
-                    name="destination"
-                    value={formData.destination}
-                    onChange={handleChange}
-                    required
-                    className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors appearance-none bg-white"
-                  >
-                    <option value="">Select a destination</option>
-                    <option value="ireland">Ireland</option>
-                    <option value="scotland">Scotland</option>
-                    <option value="england">England</option>
-                    <option value="africa">Africa</option>
-                    <option value="multiple">Multiple Destinations</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">TRAVEL DATES</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <div className="grid md:grid-cols-2 gap-12">
+                  <div className="relative group">
+                    <select
+                      name="destination"
+                      value={formData.destination}
+                      onChange={handleChange}
+                      required
+                      className="w-full bg-transparent border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-[#C9A87C] transition-colors appearance-none"
+                    >
+                      <option value="">Destination Preference</option>
+                      <option value="ireland">Ireland</option>
+                      <option value="scotland">Scotland</option>
+                      <option value="england">England</option>
+                      <option value="africa">Africa</option>
+                    </select>
+                  </div>
+                  <div className="relative group">
                     <input
                       type="text"
                       name="dates"
                       value={formData.dates}
                       onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors"
-                      placeholder="e.g., June 2025"
+                      className="w-full bg-transparent border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-[#C9A87C] transition-colors peer placeholder:text-transparent"
+                      placeholder="Travel Window"
                     />
+                    <label className="absolute left-0 top-4 text-[10px] tracking-[0.2em] text-gray-400 uppercase transition-all duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-[-10px] peer-focus:text-[10px] peer-focus:text-[#C9A87C] font-bold">
+                      Travel Window
+                    </label>
                   </div>
                 </div>
-                <div>
-                  <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">NUMBER OF TRAVELERS</label>
-                  <div className="relative">
-                    <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      name="travelers"
-                      value={formData.travelers}
-                      onChange={handleChange}
-                      className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors"
-                      placeholder="e.g., 2 adults"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              <div>
-                <label className="block text-xs tracking-[0.15em] text-[#6B4E4E] mb-2">TELL US ABOUT YOUR DREAM TRIP</label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows="4"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-[#C9A87C] transition-colors resize-none"
-                  placeholder="Share your interests, special occasions, or any specific experiences you'd like..."
-                />
+                <div className="relative group">
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows="3"
+                    className="w-full bg-transparent border-b border-gray-200 py-4 text-sm focus:outline-none focus:border-[#C9A87C] transition-colors peer placeholder:text-transparent resize-none"
+                    placeholder="Special Requests"
+                  />
+                  <label className="absolute left-0 top-4 text-[10px] tracking-[0.2em] text-gray-400 uppercase transition-all duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 peer-focus:top-[-10px] peer-focus:text-[10px] peer-focus:text-[#C9A87C] font-bold">
+                    Your Vision & Special Requests
+                  </label>
+                </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-[#6B4E4E] text-white text-xs tracking-[0.2em] hover:bg-[#5A3F3F] transition-colors rounded-sm"
+                className="w-full bg-[#1A1A1A] text-white py-6 text-[10px] tracking-[0.4em] font-black hover:bg-[#C9A87C] transition-all duration-500 flex items-center justify-center gap-4 group uppercase"
               >
-                SEND INQUIRY
-                <Send className="w-4 h-4" />
+                REQUEST PRIVATE CONSULTATION
+                <Send className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
               </button>
             </form>
           </div>

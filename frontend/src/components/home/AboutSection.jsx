@@ -27,21 +27,40 @@ const AboutSection = () => {
               <span className="text-[#8B6B6B]">Bespoke experiences</span>
             </h2>
 
-            <div className="space-y-6 text-[#5A5A5A] leading-relaxed">
+            <div className="space-y-6 text-[#5A5A5A] leading-relaxed mb-12">
               <p>
                 Once you have travelled the voyage never ends. Wanderlust & Co. will open a world of wonders and create magical memories that will stay with you far beyond your travels.
               </p>
               <p>
-                Diverge from the typical tourist destinations in favour of unique, authentic experiences. Experiences designed in the most inspiring surroundings that will be yours, and yours only. Journeys that create memorable moments and Wanderlust & Co.'s bespoke itineraries will make this happen. The wonders of the world are within your reach.
+                Diverge from the typical tourist destinations in favour of unique, authentic experiences. Our bespoke itineraries are designed to immerse you in local culture with unparalleled luxury.
               </p>
             </div>
 
+            {/* Why Us Features */}
+            <div className="grid sm:grid-cols-2 gap-8 py-8 border-t border-gray-100">
+              <div>
+                <h4 className="font-serif text-lg text-[#6B4E4E] mb-2 font-bold">Unparalleled Access</h4>
+                <p className="text-sm text-[#8B8B8B]">Private castle stays and exclusive after-hours tours of world heritage sites.</p>
+              </div>
+              <div>
+                <h4 className="font-serif text-lg text-[#6B4E4E] mb-2 font-bold">Local Experts</h4>
+                <p className="text-sm text-[#8B8B8B]">Our network of specialists ensures you discover the legitimate heart of every region.</p>
+              </div>
+              <div>
+                <h4 className="font-serif text-lg text-[#6B4E4E] mb-2 font-bold">Personal Concierge</h4>
+                <p className="text-sm text-[#8B8B8B]">Dedicated 24/7 support throughout your journey for complete peace of mind.</p>
+              </div>
+              <div>
+                <h4 className="font-serif text-lg text-[#6B4E4E] mb-2 font-bold">Sustainable Luxury</h4>
+                <p className="text-sm text-[#8B8B8B]">Travel that gives back, supporting local communities and conservation efforts.</p>
+              </div>
+            </div>
+
             <Link
-              to="/about"
-              className="inline-flex items-center gap-3 mt-10 text-xs tracking-[0.2em] text-[#6B4E4E] hover:text-[#8B6B6B] transition-colors group"
+              to="/travel/about"
+              className="inline-flex items-center gap-3 mt-10 px-8 py-3 border border-[#6B4E4E] text-[10px] tracking-[0.2em] text-[#6B4E4E] hover:bg-[#6B4E4E] hover:text-white transition-all duration-300 group"
             >
-              MEET OUR TEAM
-              <span className="w-0 group-hover:w-6 h-[1px] bg-current transition-all duration-300" />
+              OUR STORY
             </Link>
           </div>
         </div>

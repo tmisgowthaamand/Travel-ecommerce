@@ -23,8 +23,8 @@ const ShopHomePage = () => {
   const fetchProducts = async () => {
     try {
       const [allRes, featuredRes] = await Promise.all([
-        axios.get(`${API_URL}/api/products`),
-        axios.get(`${API_URL}/api/products?featured=true`)
+        axios.get(`${API_URL}/products`),
+        axios.get(`${API_URL}/products?featured=true`)
       ]);
       setProducts(allRes.data);
       setFeaturedProducts(featuredRes.data);
@@ -47,32 +47,32 @@ const ShopHomePage = () => {
   };
 
   const categories = [
-    { name: 'Luggage', image: 'https://images.unsplash.com/photo-1639598003276-8a70fcaaad6c?w=600&q=80', count: 3 },
-    { name: 'Backpacks', image: 'https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?w=600&q=80', count: 3 },
-    { name: 'Accessories', image: 'https://images.unsplash.com/photo-1555337159-d399aaa99955?w=600&q=80', count: 4 },
-    { name: 'Comfort', image: 'https://images.unsplash.com/photo-1523496922380-91d5afba98a3?w=600&q=80', count: 2 },
+    { name: 'Luggage', image: 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80', count: 19 },
+    { name: 'Backpacks', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80', count: 13 },
+    { name: 'Accessories', image: 'https://images.unsplash.com/photo-1621600411688-4be93cd68504?w=800&q=80', count: 17 },
+    { name: 'Comfort', image: 'https://images.unsplash.com/photo-1531263060782-b024de9b9793?w=800&q=80', count: 9 },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <ShopHeader />
-      
+
       {/* Hero Section */}
       <section className="relative h-[70vh] min-h-[500px] flex items-center">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=1920&q=80)' }}
+          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=80)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/70 to-transparent" />
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 backdrop-blur-sm rounded-full text-amber-300 text-sm font-medium mb-6">
               <Sparkles className="w-4 h-4" />
               New Collection 2025
             </span>
-            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Travel in <span className="text-amber-400">Style</span>
+            <h1 className="text-5xl lg:text-6xl font-serif font-bold text-white mb-6 leading-tight">
+              Travel in <span className="text-amber-400 italic">Style</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
               Premium luggage and accessories designed for the modern traveler. Explore our curated collection.
@@ -127,7 +127,7 @@ const ShopHomePage = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
             <p className="text-gray-600">Find the perfect gear for your next adventure</p>
           </div>
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
               <Link
@@ -169,7 +169,7 @@ const ShopHomePage = () => {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          
+
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(4)].map((_, i) => (
@@ -243,7 +243,7 @@ const ShopHomePage = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">All Products</h2>
             <p className="text-gray-600">Browse our complete collection</p>
           </div>
-          
+
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (

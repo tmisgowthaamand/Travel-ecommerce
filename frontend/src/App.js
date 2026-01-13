@@ -11,6 +11,7 @@ import AuthPage from "./pages/AuthPage";
 import TravelHomePage from "./pages/TravelHomePage";
 import DestinationsPage from "./pages/DestinationsPage";
 import ExperiencesPage from "./pages/ExperiencesPage";
+import ExperienceDetailPage from "./pages/ExperienceDetailPage";
 import RentalsPage from "./pages/RentalsPage";
 import AboutPage from "./pages/AboutPage";
 import BlogPage from "./pages/BlogPage";
@@ -25,6 +26,7 @@ import CartPage from "./pages/CartPage";
 
 // Combined Views
 import MyBookingsPage from "./pages/MyBookingsPage";
+import ProtectedRoute from "./components/layout/ProtectedRoute";
 
 function App() {
   return (
@@ -36,25 +38,80 @@ function App() {
             <Routes>
               {/* Split Landing */}
               <Route path="/" element={<SplitLandingPage />} />
-              
+
               {/* Auth */}
               <Route path="/login" element={<AuthPage mode="login" />} />
               <Route path="/register" element={<AuthPage mode="register" />} />
-              
-              {/* Travel Section */}
-              <Route path="/travel" element={<TravelHomePage />} />
-              <Route path="/travel/destinations" element={<DestinationsPage />} />
-              <Route path="/travel/destinations/:destination" element={<DestinationsPage />} />
-              <Route path="/travel/experiences" element={<ExperiencesPage />} />
-              <Route path="/travel/experiences/:category" element={<ExperiencesPage />} />
-              <Route path="/travel/rentals" element={<RentalsPage />} />
-              <Route path="/travel/rentals/:id" element={<RentalsPage />} />
-              <Route path="/travel/about" element={<AboutPage />} />
-              <Route path="/travel/blog" element={<BlogPage />} />
-              <Route path="/travel/blog/:id" element={<BlogPage />} />
-              <Route path="/travel/contact" element={<ContactPage />} />
-              <Route path="/travel/book" element={<BookingPage />} />
-              
+
+
+
+              {/* Travel Section - Protected */}
+              <Route path="/travel" element={
+                <ProtectedRoute>
+                  <TravelHomePage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/destinations" element={
+                <ProtectedRoute>
+                  <DestinationsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/destinations/:destination" element={
+                <ProtectedRoute>
+                  <DestinationsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/experiences" element={
+                <ProtectedRoute>
+                  <ExperiencesPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/experiences/:category" element={
+                <ProtectedRoute>
+                  <ExperiencesPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/experience/:id" element={
+                <ProtectedRoute>
+                  <ExperienceDetailPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/rentals" element={
+                <ProtectedRoute>
+                  <RentalsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/rentals/:id" element={
+                <ProtectedRoute>
+                  <RentalsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/about" element={
+                <ProtectedRoute>
+                  <AboutPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/blog" element={
+                <ProtectedRoute>
+                  <BlogPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/blog/:id" element={
+                <ProtectedRoute>
+                  <BlogPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/contact" element={
+                <ProtectedRoute>
+                  <ContactPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/travel/book" element={
+                <ProtectedRoute>
+                  <BookingPage />
+                </ProtectedRoute>
+              } />
+
               {/* Legacy Travel Routes (redirect compatibility) */}
               <Route path="/destinations" element={<DestinationsPage />} />
               <Route path="/experiences" element={<ExperiencesPage />} />
@@ -62,13 +119,13 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              
+
               {/* Shop Section */}
               <Route path="/shop" element={<ShopHomePage />} />
               <Route path="/shop/category/:category" element={<CategoryPage />} />
               <Route path="/shop/product/:productId" element={<ProductDetailPage />} />
               <Route path="/shop/cart" element={<CartPage />} />
-              
+
               {/* Combined Views */}
               <Route path="/my-bookings" element={<MyBookingsPage />} />
             </Routes>

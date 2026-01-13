@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TravelHeader from '../components/travel/TravelHeader';
 import Footer from '../components/layout/Footer';
-import { Calendar, Users, MapPin, Loader2 } from 'lucide-react';
+import { Calendar, Users, MapPin, Loader2, ArrowRight, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import axios from 'axios';
@@ -14,11 +14,11 @@ const BookingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useAuth();
-  
+
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type') || 'destination';
   const itemId = searchParams.get('id');
-  
+
   // Get item data based on type
   const getItemData = () => {
     const id = parseInt(itemId);
@@ -33,9 +33,9 @@ const BookingPage = () => {
         return null;
     }
   };
-  
+
   const item = getItemData();
-  
+
   const [formData, setFormData] = useState({
     startDate: '',
     endDate: '',
@@ -45,7 +45,7 @@ const BookingPage = () => {
 
   const getPriceEstimate = () => {
     const basePrice = type === 'rental' ? 8500 : type === 'experience' ? 500 : 2500;
-    const nights = formData.startDate && formData.endDate 
+    const nights = formData.startDate && formData.endDate
       ? Math.ceil((new Date(formData.endDate) - new Date(formData.startDate)) / (1000 * 60 * 60 * 24))
       : 1;
     return basePrice * Math.max(nights, 1) * formData.guests;
@@ -53,22 +53,22 @@ const BookingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!isAuthenticated) {
       toast.error('Please sign in to book');
       navigate('/login', { state: { from: location.pathname + location.search } });
       return;
     }
-    
+
     if (!item) {
       toast.error('Invalid booking item');
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
-      await axios.post(`${API_URL}/api/bookings`, {
+      await axios.post(`${API_URL}/bookings`, {
         booking_type: type,
         item_id: String(item.id),
         item_name: item.name || item.title,
@@ -78,12 +78,12 @@ const BookingPage = () => {
         guests: formData.guests,
         total_price: getPriceEstimate()
       });
-      
-      toast.success('Booking confirmed!');
+
+      toast.success('Your journey has been successfully registered.');
       navigate('/my-bookings');
     } catch (error) {
       console.error('Booking failed:', error);
-      toast.error('Failed to create booking. Please try again.');
+      toast.error('Failed to register journey. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -91,113 +91,119 @@ const BookingPage = () => {
 
   if (!item) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-white">
         <TravelHeader />
-        <div className="pt-24 text-center py-16">
-          <h1 className="text-2xl font-bold text-gray-900">Item not found</h1>
-          <p className="text-gray-600 mt-2">The booking item could not be found.</p>
+        <div className="pt-48 text-center py-32">
+          <p className="text-[#C9A87C] text-[10px] tracking-[0.5em] mb-6 font-black uppercase">Error</p>
+          <h1 className="font-serif text-4xl text-[#1A1A1A] italic">Sanctuary not found</h1>
+          <p className="text-gray-400 mt-6 font-light">The requested destination or experience is currently unavailable.</p>
         </div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <TravelHeader />
-      
-      <div className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-            {/* Header Image */}
-            <div className="relative h-64">
-              <img
-                src={item.image}
-                alt={item.name || item.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm capitalize">
-                  {type}
-                </span>
-                <h1 className="text-3xl font-bold mt-2">{item.name || item.title}</h1>
-                {item.location && (
-                  <p className="flex items-center gap-1 mt-1 text-white/80">
-                    <MapPin className="w-4 h-4" />
-                    {item.location}
-                  </p>
-                )}
+
+      <div className="pt-32 pb-32">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-12 gap-24 items-start">
+
+            {/* Left: Summary */}
+            <div className="lg:col-span-7 space-y-16">
+              <div>
+                <p className="text-[#C9A87C] text-[10px] tracking-[0.5em] mb-8 font-black uppercase">Reservation Detail</p>
+                <h1 className="font-serif text-6xl text-[#1A1A1A] font-light italic mb-10 leading-tight">Securing Your <span className="italic">Odyssey</span></h1>
+                <div className="w-24 h-[1px] bg-[#C9A87C] mb-12" />
+              </div>
+
+              <div className="relative aspect-[16/9] overflow-hidden grayscale">
+                <img
+                  src={item.image}
+                  alt={item.name || item.title}
+                  className="w-full h-full object-cover scale-110"
+                />
+                <div className="absolute inset-0 bg-[#3D2E2E]/10" />
+                <div className="absolute top-8 left-8">
+                  <span className="bg-white/90 backdrop-blur-md px-6 py-2 text-[10px] tracking-[0.2em] font-black text-[#1A1A1A] uppercase italic">
+                    {type}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <h2 className="font-serif text-3xl text-[#1A1A1A] italic">{item.name || item.title}</h2>
+                <div className="flex items-center gap-12 text-[10px] tracking-[0.2em] font-black text-gray-500 uppercase">
+                  {item.location && (
+                    <span className="flex items-center gap-3">
+                      <MapPin className="w-4 h-4 text-[#C9A87C]" />
+                      {item.location}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-3">
+                    <Star className="w-4 h-4 text-[#C9A87C]" fill="currentColor" />
+                    Ultra-Exclusive
+                  </span>
+                </div>
+                <p className="text-gray-400 font-light leading-relaxed text-lg max-w-2xl italic">
+                  Prepare for an immersion into the extraordinary. Your residency at {item.name || item.title} will be curated to the most exacting standards of luxury and authenticity.
+                </p>
               </div>
             </div>
 
-            {/* Booking Form */}
-            <div className="p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Complete Your Booking</h2>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Calendar className="w-4 h-4 inline mr-2" />
-                      Start Date
-                    </label>
+            {/* Right: Booking Card */}
+            <div className="lg:col-span-5 bg-[#1A1A1A] p-12 lg:p-16 text-white lg:sticky lg:top-32 shadow-2xl">
+              <p className="text-[#C9A87C] text-[10px] tracking-[0.3em] mb-10 font-black uppercase italic">Arrangements</p>
+
+              <form onSubmit={handleSubmit} className="space-y-10">
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] tracking-[0.2em] text-white/40 font-bold uppercase italic">Arrival Date</label>
                     <input
                       type="date"
                       value={formData.startDate}
                       onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500"
+                      className="w-full bg-transparent border-b border-white/10 py-3 text-sm focus:border-[#C9A87C] transition-colors outline-none cursor-pointer"
                       required
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Calendar className="w-4 h-4 inline mr-2" />
-                      End Date
-                    </label>
+                  <div className="space-y-3">
+                    <label className="text-[10px] tracking-[0.2em] text-white/40 font-bold uppercase italic">Departure Date</label>
                     <input
                       type="date"
                       value={formData.endDate}
                       onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
                       min={formData.startDate || new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500"
+                      className="w-full bg-transparent border-b border-white/10 py-3 text-sm focus:border-[#C9A87C] transition-colors outline-none cursor-pointer"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Users className="w-4 h-4 inline mr-2" />
-                    Number of Guests
-                  </label>
+                <div className="space-y-3">
+                  <label className="text-[10px] tracking-[0.2em] text-white/40 font-bold uppercase italic">The Party</label>
                   <select
                     value={formData.guests}
                     onChange={(e) => setFormData({ ...formData, guests: parseInt(e.target.value) })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500"
+                    className="w-full bg-transparent border-b border-white/10 py-3 text-sm focus:border-[#C9A87C] transition-colors outline-none cursor-pointer appearance-none"
                   >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
-                      <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>
+                    {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map(n => (
+                      <option key={n} value={n} className="bg-[#1A1A1A]">{n} Distinguished Guest{n > 1 ? 's' : ''}</option>
                     ))}
                   </select>
                 </div>
 
-                {/* Price Summary */}
-                <div className="bg-emerald-50 rounded-xl p-6">
-                  <h3 className="font-medium text-emerald-900 mb-4">Price Estimate</h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-emerald-700">Base Price</span>
-                      <span className="font-medium">${getPriceEstimate().toLocaleString()}</span>
+                {/* Investment Abstract */}
+                <div className="pt-12 border-t border-white/5 space-y-6">
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-[10px] tracking-[0.1em] text-white/30 font-bold uppercase mb-2">Estimated Investment</p>
+                      <p className="text-4xl font-serif text-white italic">${getPriceEstimate().toLocaleString()}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-emerald-700">Taxes & Fees</span>
-                      <span className="font-medium">Included</span>
-                    </div>
-                    <div className="pt-2 border-t border-emerald-200 flex justify-between">
-                      <span className="font-bold text-emerald-900">Total</span>
-                      <span className="font-bold text-xl text-emerald-900">
-                        ${getPriceEstimate().toLocaleString()}
-                      </span>
+                    <div className="text-right">
+                      <p className="text-[9px] tracking-[0.1em] text-white/20 font-bold uppercase">USD inclusive of all curated services</p>
                     </div>
                   </div>
                 </div>
@@ -205,23 +211,30 @@ const BookingPage = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-6 bg-[#C9A87C] text-[#1A1A1A] text-[10px] tracking-[0.4em] font-black hover:bg-white transition-all duration-500 uppercase flex items-center justify-center gap-4 group"
                 >
                   {loading ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Processing...
+                      SYNCHRONIZING...
                     </>
                   ) : (
-                    'Confirm Booking'
+                    <>
+                      FINALIZE RESERVATION
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                    </>
                   )}
                 </button>
+
+                <p className="text-[9px] tracking-[0.2em] text-white/20 text-center font-bold uppercase italic mt-8 leading-relaxed">
+                  Subject to availability and personal concierge verification.
+                </p>
               </form>
             </div>
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

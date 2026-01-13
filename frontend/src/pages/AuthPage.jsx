@@ -8,7 +8,7 @@ const AuthPage = ({ mode = 'login' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, register } = useAuth();
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,20 +28,19 @@ const AuthPage = ({ mode = 'login' }) => {
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
-        toast.success('Welcome back!');
+        toast.success('Access granted. Welcome to the collection.');
       } else {
         if (formData.password.length < 6) {
-          throw new Error('Password must be at least 6 characters');
+          throw new Error('Credential must be at least 6 characters');
         }
         await register(formData.name, formData.email, formData.password);
-        toast.success('Account created successfully!');
+        toast.success('Identity registered. Welcome to W&C.');
       }
-      
-      // Redirect to previous page or home
-      const from = location.state?.from || '/';
+
+      const from = location.state?.from || '/travel';
       navigate(from);
     } catch (err) {
-      const message = err.response?.data?.detail || err.message || 'An error occurred';
+      const message = err.response?.data?.detail || err.message || 'Verification failed';
       setError(message);
       toast.error(message);
     } finally {
@@ -50,155 +49,158 @@ const AuthPage = ({ mode = 'login' }) => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Image */}
-      <div className="hidden lg:flex lg:w-1/2 relative">
+    <div className="min-h-screen flex bg-white font-sans overflow-hidden">
+      {/* Visual Side */}
+      <div className="hidden lg:flex lg:w-3/5 relative overflow-hidden group">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] group-hover:scale-110"
           style={{
             backgroundImage: isLogin
-              ? 'url(https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=1920&q=80)'
-              : 'url(https://images.unsplash.com/photo-1639598003276-8a70fcaaad6c?w=1920&q=80)'
+              ? 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&q=80)'
+              : 'url(https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920&q=80)'
           }}
         />
-        <div className={`absolute inset-0 ${
-          isLogin 
-            ? 'bg-gradient-to-br from-emerald-900/80 to-teal-900/80' 
-            : 'bg-gradient-to-br from-amber-900/80 to-orange-900/80'
-        }`} />
-        
-        <div className="relative z-10 flex flex-col justify-center items-center text-center px-12">
-          <h1 className="text-5xl font-serif text-white mb-6">
-            <span className="font-light">Wanderlust</span>
-            <span className="block text-2xl mt-2 text-white/80">&</span>
-            <span className="font-light">Company</span>
-          </h1>
-          <p className="text-white/80 text-lg max-w-md leading-relaxed">
-            {isLogin 
-              ? 'Your gateway to extraordinary journeys and premium travel essentials.'
-              : 'Join our community of travelers and discover a world of possibilities.'
-            }
-          </p>
+        <div className="absolute inset-0 bg-[#1A1A1A]/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent opacity-80" />
+
+        <div className="relative z-10 flex flex-col justify-end p-24 w-full h-full">
+          <div className="animate-reveal-up">
+            <p className="text-[#C9A87C] text-[10px] tracking-[0.5em] mb-6 font-black uppercase italic">Identity Verification</p>
+            <h1 className="font-serif text-7xl text-white font-light mb-8 leading-tight">
+              Curating exclusively <br /> for the <span className="italic">extraordinary.</span>
+            </h1>
+            <div className="w-24 h-[1px] bg-[#C9A87C] mb-8" />
+            <p className="text-white/40 text-[10px] tracking-[0.3em] font-black uppercase italic">Establishing Global Resonance Since 1999</p>
+          </div>
+        </div>
+
+        {/* Floating Brand Mark */}
+        <div className="absolute top-12 left-12 z-10 animate-fade-in">
+          <Link to="/" className="font-serif text-3xl text-white font-light italic">W<span className="text-[#C9A87C] font-normal">&</span>C</Link>
         </div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex-1 flex flex-col justify-center px-8 lg:px-16 py-12 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-md w-full mx-auto">
+      {/* Interface Side */}
+      <div className="flex-1 flex flex-col justify-between py-12 px-8 lg:px-20 animate-fade-in overflow-y-auto">
+        <div className="flex justify-end items-center">
           <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+            to="/travel"
+            className="text-[10px] tracking-[0.3em] font-black text-gray-400 hover:text-[#1A1A1A] transition-colors uppercase flex items-center gap-3 group"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Home</span>
+            Explore the Collection
+            <ArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-2 transition-transform" />
           </Link>
+        </div>
 
-          <div className="mb-8">
-            <h2 className="text-3xl font-serif text-gray-900 mb-2">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
+        <div className="max-w-md w-full mx-auto py-12">
+          <div className="mb-14 text-center">
+            <h2 className="font-serif text-5xl text-[#1A1A1A] italic mb-4 leading-tight">
+              {isLogin ? 'Welcome Back' : 'Create Identity'}
             </h2>
-            <p className="text-gray-600">
-              {isLogin 
-                ? 'Sign in to access your bookings and orders' 
-                : 'Start your journey with us today'
-              }
-            </p>
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-8 bg-[#C9A87C]/30" />
+              <p className="text-gray-400 text-[9px] tracking-[0.3em] uppercase font-black">Secure Member Portal</p>
+              <div className="h-px w-8 bg-[#C9A87C]/30" />
+            </div>
           </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-              {error}
-            </div>
-          )}
+          <form onSubmit={handleSubmit} className="space-y-10">
+            {error && (
+              <div className="p-4 border border-red-100 bg-red-50 text-red-500 text-[10px] tracking-[0.1em] font-black uppercase text-center animate-shake">
+                {error}
+              </div>
+            )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <div className="space-y-3">
+                <label className="text-[10px] tracking-[0.3em] text-[#1A1A1A]/40 font-black uppercase italic ml-1">Full Name</label>
+                <div className="relative group">
+                  <User className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 group-focus-within:text-[#C9A87C] transition-colors" />
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
-                    placeholder="John Doe"
+                    className="w-full pl-8 pr-0 py-4 bg-transparent border-b border-gray-100 focus:border-[#1A1A1A] outline-none text-sm transition-all font-light"
+                    placeholder="E.G. JULIAN VANE"
                     required
                   />
                 </div>
               </div>
             )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="space-y-3">
+              <label className="text-[10px] tracking-[0.3em] text-[#1A1A1A]/40 font-black uppercase italic ml-1">Credential</label>
+              <div className="relative group">
+                <Mail className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 group-focus-within:text-[#C9A87C] transition-colors" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
-                  placeholder="you@example.com"
+                  className="w-full pl-8 pr-0 py-4 bg-transparent border-b border-gray-100 focus:border-[#1A1A1A] outline-none text-sm transition-all font-light"
+                  placeholder="IDENTITY@DOMAIN.COM"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-[10px] tracking-[0.3em] text-[#1A1A1A]/40 font-black uppercase italic ml-1">Secret</label>
+                {isLogin && <button type="button" className="text-[9px] tracking-[0.2em] text-[#C9A87C] font-black uppercase hover:text-[#1A1A1A] transition-colors italic">Recovery?</button>}
+              </div>
+              <div className="relative group">
+                <Lock className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300 group-focus-within:text-[#C9A87C] transition-colors" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+                  className="w-full pl-8 pr-12 py-4 bg-transparent border-b border-gray-100 focus:border-[#1A1A1A] outline-none text-sm transition-all font-light"
                   placeholder="••••••••"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-300 hover:text-[#C9A87C] transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full py-4 rounded-xl font-medium text-white transition-all duration-300 flex items-center justify-center gap-2 ${
-                isLogin
-                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700'
-                  : 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700'
-              } ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            >
-              {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-              {isLogin ? 'Sign In' : 'Create Account'}
-            </button>
+            <div className="pt-6">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-6 bg-[#1A1A1A] text-white text-[10px] tracking-[0.4em] font-black uppercase hover:bg-[#C9A87C] transition-all disabled:opacity-50 flex items-center justify-center gap-4 relative overflow-hidden group shadow-2xl"
+              >
+                <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+                {loading && <Loader2 className="w-4 h-4 animate-spin text-[#C9A87C]" />}
+                <span className="relative z-10">{isLogin ? 'Verify Identity' : 'Establish Credential'}</span>
+              </button>
+            </div>
           </form>
 
-          <div className="mt-8 text-center">
-            <p className="text-gray-600">
-              {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+          <div className="mt-12 text-center">
+            <p className="text-gray-400 text-[10px] tracking-[0.2em] uppercase font-black">
+              {isLogin ? "New to the collection?" : "Already established?"}{' '}
               <Link
                 to={isLogin ? '/register' : '/login'}
-                className={`font-medium ${
-                  isLogin ? 'text-emerald-600 hover:text-emerald-700' : 'text-amber-600 hover:text-amber-700'
-                }`}
+                className="text-[#C9A87C] hover:text-[#1A1A1A] transition-colors italic ml-2 border-b border-[#C9A87C]/20"
               >
-                {isLogin ? 'Sign Up' : 'Sign In'}
+                {isLogin ? 'Request Invitation' : 'Verify Credentials'}
               </Link>
             </p>
           </div>
+
+          <div className="mt-16 pt-12 border-t border-gray-50 flex justify-center gap-8 opacity-20 hover:opacity-100 transition-opacity">
+            <button className="text-[10px] tracking-[0.3em] font-black text-[#1A1A1A] uppercase hover:text-[#C9A87C]">Apple ID</button>
+            <button className="text-[10px] tracking-[0.3em] font-black text-[#1A1A1A] uppercase hover:text-[#C9A87C]">Google</button>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <p className="text-gray-200 text-[9px] tracking-[0.6em] uppercase font-black">Privacy • Terms • Elegance</p>
         </div>
       </div>
     </div>

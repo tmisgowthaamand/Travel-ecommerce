@@ -18,7 +18,7 @@ export const CartProvider = ({ children }) => {
     }
     try {
       setLoading(true);
-      const response = await axios.get(`${API_URL}/api/cart`);
+      const response = await axios.get(`${API_URL}/cart`);
       setCart(response.data);
     } catch (error) {
       console.error('Failed to fetch cart:', error);
@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (productId, quantity = 1) => {
     if (!isAuthenticated) return false;
     try {
-      await axios.post(`${API_URL}/api/cart/add`, { product_id: productId, quantity });
+      await axios.post(`${API_URL}/cart/add`, { product_id: productId, quantity });
       await fetchCart();
       return true;
     } catch (error) {
@@ -46,7 +46,7 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = async (productId, quantity) => {
     if (!isAuthenticated) return false;
     try {
-      await axios.put(`${API_URL}/api/cart/update`, { product_id: productId, quantity });
+      await axios.put(`${API_URL}/cart/update`, { product_id: productId, quantity });
       await fetchCart();
       return true;
     } catch (error) {
@@ -58,7 +58,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (productId) => {
     if (!isAuthenticated) return false;
     try {
-      await axios.delete(`${API_URL}/api/cart/remove/${productId}`);
+      await axios.delete(`${API_URL}/cart/remove/${productId}`);
       await fetchCart();
       return true;
     } catch (error) {
@@ -70,7 +70,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     if (!isAuthenticated) return false;
     try {
-      await axios.delete(`${API_URL}/api/cart/clear`);
+      await axios.delete(`${API_URL}/cart/clear`);
       await fetchCart();
       return true;
     } catch (error) {

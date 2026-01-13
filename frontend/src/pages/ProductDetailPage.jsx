@@ -25,7 +25,7 @@ const ProductDetailPage = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/products/${productId}`);
+      const response = await axios.get(`${API_URL}/products/${productId}`);
       setProduct(response.data);
     } catch (error) {
       console.error('Failed to fetch product:', error);
@@ -42,7 +42,7 @@ const ProductDetailPage = () => {
       navigate('/login', { state: { from: `/shop/product/${productId}` } });
       return;
     }
-    
+
     setAddingToCart(true);
     const success = await addToCart(product.id, quantity);
     if (success) {
@@ -76,9 +76,19 @@ const ProductDetailPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <ShopHeader />
-      
+
       <div className="pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Link
+              to={`/shop/category/${product.category}`}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-600 hover:text-amber-600 font-medium rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              Back to {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+            </Link>
+          </div>
+
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm mb-8">
             <Link to="/shop" className="text-gray-500 hover:text-gray-700">Shop</Link>
@@ -146,6 +156,21 @@ const ProductDetailPage = () => {
               <p className="text-gray-600 text-lg leading-relaxed">
                 {product.description}
               </p>
+
+              {/* Product details/Features */}
+              {product.details && product.details.length > 0 && (
+                <div className="space-y-3 pt-4">
+                  <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Key Features</h3>
+                  <ul className="space-y-2">
+                    {product.details.map((detail, index) => (
+                      <li key={index} className="flex items-start gap-3 text-gray-600">
+                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Tags */}
               {product.tags && product.tags.length > 0 && (
@@ -221,11 +246,11 @@ const ProductDetailPage = () => {
           {/* Back Button */}
           <div className="mt-12">
             <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
+              to={`/shop/category/${product.category}`}
+              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium bg-white px-6 py-3 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md"
             >
               <ArrowLeft className="w-4 h-4" />
-              Continue Shopping
+              Back to {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
             </Link>
           </div>
         </div>

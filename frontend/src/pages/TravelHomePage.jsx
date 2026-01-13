@@ -10,6 +10,7 @@ import RentalsSection from '../components/home/RentalsSection';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import BlogSection from '../components/home/BlogSection';
 import CTASection from '../components/home/CTASection';
+import LuxuryStats from '../components/home/LuxuryStats';
 
 const TravelHomePage = () => {
   return (
@@ -18,6 +19,7 @@ const TravelHomePage = () => {
       <main>
         <HeroSection />
         <AboutSection />
+        <LuxuryStats />
         <DestinationsSection />
         <ExperiencesSection />
         <RentalsSection />
