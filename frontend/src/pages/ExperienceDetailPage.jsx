@@ -36,7 +36,7 @@ const ExperienceDetailPage = () => {
             {/* Hero Section */}
             <section className="relative h-[70vh] flex items-end overflow-hidden">
                 <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] hover:scale-105"
+                    className="absolute inset-0 bg-cover bg-center transition-transform [transition-duration:8000ms] hover:scale-105"
                     style={{ backgroundImage: `url(${experience.image})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

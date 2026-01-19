@@ -58,7 +58,7 @@ const ContactPage = () => {
       {/* Hero: Elegant Entrance */}
       <section className="relative h-[80vh] flex items-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all duration-[5000ms]"
+          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all [transition-duration:5000ms]"
           style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }}
         />
         <div className="absolute inset-0 bg-[#1A1A1A]/40" />
@@ -148,7 +148,7 @@ const ContactPage = () => {
                     </p>
                     <button
                       onClick={() => setSubmitted(false)}
-                      className="mt-20 text-[10px] tracking-[0.6em] font-black border-b-2 border-[#C9A87C] pb-4 uppercase hover:bg-[#1A1A1A] hover:text-white hover:px-8 transition-all duration-[1000ms]"
+                      className="mt-20 text-[10px] tracking-[0.6em] font-black border-b-2 border-[#C9A87C] pb-4 uppercase hover:bg-[#1A1A1A] hover:text-white hover:px-8 transition-all [transition-duration:1000ms]"
                     >
                       Revised Inquiry
                     </button>

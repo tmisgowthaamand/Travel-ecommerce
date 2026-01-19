@@ -55,7 +55,7 @@ const AboutPage = () => {
                 <img
                   src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80"
                   alt="Our craft"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[2000ms] group-hover:scale-110"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all [transition-duration:2000ms] group-hover:scale-110"
                 />
               </div>
               <div className="absolute -top-12 -left-12 w-32 h-32 border-l border-t border-[#C9A87C]/40" />
@@ -108,7 +108,7 @@ const AboutPage = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 border border-white/5">
             {values.map((value, i) => (
-              <div key={i} className="group relative p-16 bg-[#1A1A1A] hover:bg-[#C9A87C] transition-all duration-1000 flex flex-col justify-between h-[500px]">
+              <div key={i} className="group relative p-16 bg-[#1A1A1A] hover:bg-[#C9A87C] transition-all [transition-duration:1000ms] flex flex-col justify-between h-[500px]">
                 <div className="relative z-10 space-y-10 group-hover:-translate-y-4 transition-transform duration-700">
                   <value.icon className="w-10 h-10 text-[#C9A87C] group-hover:text-[#1A1A1A] transition-colors duration-700 font-light" />
                   <h3 className="font-serif text-3xl text-white font-light group-hover:text-[#1A1A1A] transition-colors">{value.title}</h3>
@@ -140,8 +140,8 @@ const AboutPage = () => {
               { title: "Delivery", desc: "From the moment you depart, every detail is overseen with white-glove precision.", img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80" }
             ].map((step, i) => (
               <div key={i} className="group space-y-8">
-                <div className="aspect-[4/3] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-[1500ms]">
-                  <img src={step.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" alt={step.title} />
+                <div className="aspect-[4/3] overflow-hidden grayscale group-hover:grayscale-0 transition-all [transition-duration:1500ms]">
+                  <img src={step.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform [transition-duration:2000ms]" alt={step.title} />
                 </div>
                 <div className="space-y-4 px-4 border-l border-[#C9A87C]/30">
                   <h3 className="font-serif text-3xl italic text-[#1A1A1A]">{step.title}</h3>
@@ -167,11 +167,11 @@ const AboutPage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20">
             {teamMembers.map((member) => (
               <div key={member.id} className="group flex flex-col">
-                <div className="relative aspect-[3/4] overflow-hidden mb-12 grayscale group-hover:grayscale-0 transition-all duration-[1500ms]">
+                <div className="relative aspect-[3/4] overflow-hidden mb-12 grayscale group-hover:grayscale-0 transition-all [transition-duration:1500ms]">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all duration-[2000ms]"
+                    className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-all [transition-duration:2000ms]"
                   />
                   <div className="absolute inset-0 bg-[#3D2E2E]/10 group-hover:opacity-0 transition-opacity" />
                   <div className="absolute bottom-0 left-0 w-full p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-700 bg-gradient-to-t from-[#1A1A1A] to-transparent">

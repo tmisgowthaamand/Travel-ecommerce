@@ -17,7 +17,7 @@ const RentalsPage = () => {
       {/* Hero: Majestic Scale */}
       <section className="relative h-[80vh] flex items-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all duration-[3000ms]"
+          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all [transition-duration:3000ms]"
           style={{ backgroundImage: `url(${rental?.image || 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920&q=80'})` }}
         />
         <div className="absolute inset-0 bg-[#0F172A]/40" />
@@ -63,7 +63,7 @@ const RentalsPage = () => {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[2000ms]"
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all [transition-duration:2000ms]"
                       />
                       <div className="absolute top-8 right-8 bg-[#1A1A1A]/90 backdrop-blur-md px-8 py-4 text-white">
                         <p className="text-[10px] tracking-[0.3em] font-black uppercase italic">{item.price.split('/')[0]}</p>
@@ -160,11 +160,11 @@ const RentalsPage = () => {
                   {/* Gallery Grid */}
                   <div className="space-y-8">
                     {rental.gallery && rental.gallery.map((img, index) => (
-                      <div key={index} className="aspect-[4/3] overflow-hidden grayscale hover:grayscale-0 transition-all duration-[2000ms] shadow-lg">
+                      <div key={index} className="aspect-[4/3] overflow-hidden grayscale hover:grayscale-0 transition-all [transition-duration:2000ms] shadow-lg">
                         <img
                           src={img}
                           alt={`Gallery ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-[3000ms]"
+                          className="w-full h-full object-cover hover:scale-110 transition-transform [transition-duration:3000ms]"
                         />
                       </div>
                     ))}

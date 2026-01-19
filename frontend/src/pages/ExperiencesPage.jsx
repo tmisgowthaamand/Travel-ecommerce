@@ -30,7 +30,7 @@ const ExperiencesPage = () => {
       {/* Hero: Immersive Entrance */}
       <section className="relative h-[80vh] flex items-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all duration-[5000ms]"
+          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all [transition-duration:5000ms]"
           style={{ backgroundImage: `url(${heroExperience?.image || 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&q=80&w=1920'})` }}
         />
         <div className="absolute inset-0 bg-black/40" />
@@ -122,7 +122,7 @@ const ExperiencesPage = () => {
                 <img
                   src={heroExperience.image}
                   alt="Curated Experience"
-                  className="w-full h-full object-cover transition-transform duration-[4000ms] group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform [transition-duration:4000ms] group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-1000" />
                 {/* Visual Accent */}
@@ -147,7 +147,7 @@ const ExperiencesPage = () => {
                     <img
                       src={exp.image}
                       alt={exp.title}
-                      className="w-full h-full object-cover transition-all duration-[2500ms] group-hover:scale-110 brightness-[0.95] group-hover:brightness-105"
+                      className="w-full h-full object-cover transition-all [transition-duration:2500ms] group-hover:scale-110 brightness-[0.95] group-hover:brightness-105"
                       loading="lazy"
                     />
                     <div className="absolute top-6 right-6">

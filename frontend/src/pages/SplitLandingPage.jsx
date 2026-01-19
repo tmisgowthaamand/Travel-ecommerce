@@ -10,14 +10,14 @@ const SplitLandingPage = () => {
       {/* Travel Side */}
       <Link
         to="/travel"
-        className={`relative flex-1 flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer group overflow-hidden ${hoveredSide === 'travel' ? 'lg:flex-[1.5]' : hoveredSide === 'shop' ? 'lg:flex-[0.5]' : 'lg:flex-1'
+        className={`relative flex-1 flex items-center justify-center transition-all duration-1000 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] cursor-pointer group overflow-hidden ${hoveredSide === 'travel' ? 'lg:flex-[1.5]' : hoveredSide === 'shop' ? 'lg:flex-[0.5]' : 'lg:flex-1'
           } min-h-[50vh] lg:min-h-screen`}
         onMouseEnter={() => setHoveredSide('travel')}
         onMouseLeave={() => setHoveredSide(null)}
       >
         {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] group-hover:scale-110 grayscale group-hover:grayscale-0"
+          className="absolute inset-0 bg-cover bg-center transition-all [transition-duration:2000ms] group-hover:scale-110 grayscale group-hover:grayscale-0"
           style={{
             backgroundImage: 'url(https://images.unsplash.com/photo-1551918120-9739cb430c6d?w=1920&q=80)'
           }}
@@ -51,14 +51,14 @@ const SplitLandingPage = () => {
       {/* Shop Side */}
       <Link
         to="/shop"
-        className={`relative flex-1 flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer group overflow-hidden ${hoveredSide === 'shop' ? 'lg:flex-[1.5]' : hoveredSide === 'travel' ? 'lg:flex-[0.5]' : 'lg:flex-1'
+        className={`relative flex-1 flex items-center justify-center transition-all duration-1000 [transition-timing-function:cubic-bezier(0.23,1,0.32,1)] cursor-pointer group overflow-hidden ${hoveredSide === 'shop' ? 'lg:flex-[1.5]' : hoveredSide === 'travel' ? 'lg:flex-[0.5]' : 'lg:flex-1'
           } min-h-[50vh] lg:min-h-screen`}
         onMouseEnter={() => setHoveredSide('shop')}
         onMouseLeave={() => setHoveredSide(null)}
       >
         {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] group-hover:scale-110 grayscale group-hover:grayscale-0"
+          className="absolute inset-0 bg-cover bg-center transition-all [transition-duration:2000ms] group-hover:scale-110 grayscale group-hover:grayscale-0"
           style={{
             backgroundImage: 'url(https://images.unsplash.com/photo-1639598003276-8a70fcaaad6c?w=1920&q=80)'
           }}

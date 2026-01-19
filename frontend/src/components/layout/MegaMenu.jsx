@@ -70,7 +70,7 @@ const MegaMenu = ({ items, isOpen, onClose }) => {
                                     src={item.image}
                                     alt={item.label}
                                     className={cn(
-                                        "w-full h-full object-cover transition-transform duration-[20s] ease-linear",
+                                        "w-full h-full object-cover transition-transform [transition-duration:20s] ease-linear",
                                         activeId === item.id ? "scale-110" : "scale-100"
                                     )}
                                 />

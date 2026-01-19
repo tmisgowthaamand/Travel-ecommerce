@@ -17,7 +17,7 @@ const BlogPage = () => {
       {/* Hero: Editorial Grandeur */}
       <section className="relative h-[80vh] flex items-center overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all duration-[5000ms]"
+          className="absolute inset-0 bg-cover bg-center animate-slow-zoom transition-all [transition-duration:5000ms]"
           style={{ backgroundImage: `url(${post?.image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&q=80'})` }}
         />
         <div className="absolute inset-0 bg-[#1A1A1A]/50" />
@@ -73,11 +73,11 @@ const BlogPage = () => {
                     to={`/travel/blog/${item.id}`}
                     className="group space-y-12 block"
                   >
-                    <div className="relative aspect-[3/4] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-[1500ms]">
+                    <div className="relative aspect-[3/4] overflow-hidden grayscale group-hover:grayscale-0 transition-all [transition-duration:1500ms]">
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform [transition-duration:2000ms]"
                       />
                       <div className="absolute inset-0 bg-[#3D2E2E]/10 group-hover:opacity-0 transition-opacity" />
                     </div>
@@ -161,7 +161,7 @@ const BlogPage = () => {
                                   <img
                                     src={block.src}
                                     alt={block.caption || "Blog illustration"}
-                                    className="w-full h-auto hover:scale-105 transition-transform duration-[2s]"
+                                    className="w-full h-auto hover:scale-105 transition-transform [transition-duration:2s]"
                                   />
                                 </div>
                                 {block.caption && <figcaption className="text-[10px] tracking-[0.2em] text-center text-[#C9A87C] uppercase font-bold pt-4">{block.caption}</figcaption>}
