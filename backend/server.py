@@ -17,29 +17,46 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 
+from urllib.parse import quote_plus
+
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL')
 is_production = os.environ.get('RENDER') == 'true'
 
+if mongo_url and "@" in mongo_url and ":" in mongo_url:
+    try:
+        # Handle passwords with special characters like '@'
+        # Format: mongodb+srv://user:password@host
+        proto = mongo_url.split("://")[0]
+        rest = mongo_url.split("://")[1]
+        
+        # Find the LAST '@' which separates credentials from host
+        auth_part, host_part = rest.rsplit("@", 1)
+        
+        if ":" in auth_part:
+            user, pwd = auth_part.split(":", 1)
+            # Reconstruct with encoded password
+            mongo_url = f"{proto}://{user}:{quote_plus(pwd)}@{host_part}"
+    except Exception as e:
+        print(f"WARNING: Could not auto-encode MongoDB password: {e}")
+
 if not mongo_url:
     if is_production:
         print("CRITICAL ERROR: MONGO_URL environment variable is MISSING on Render!")
-        print("Application will likely fail to connect to any database.")
     else:
-        print("WARNING: MONGO_URL not found. Falling back to localhost for development.")
-    mongo_url = "mongodb://localhost:27017/travel_ecommerce"
+        print("WARNING: MONGO_URL not found. Falling back to localhost.")
+    mongo_url = "mongodb://localhost:27017/Travel-ecommerce"
 
-# Sanitize URL for logging (hide credentials)
+# Sanitize URL for logging
 safe_url = mongo_url
 if "@" in mongo_url:
     parts = mongo_url.split("@")
-    safe_url = parts[0].split("//")[0] + "//****:****@" + parts[1]
+    safe_url = parts[0].split("//")[0] + "//****:****@" + parts[(len(parts)-1)]
 
 print(f"DEBUG: Connecting to MongoDB at -> {safe_url}")
 
-# Use a shorter timeout for server selection to fail-fast
 client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
-db_name = os.environ.get('DB_NAME', 'travel_ecommerce')
+db_name = os.environ.get('DB_NAME', 'Travel-ecommerce')
 db = client[db_name]
 print(f"DEBUG: Using database -> {db_name}")
 
@@ -1569,6 +1586,7 @@ if "*" in origins:
     # We must list explicit origins.
     allow_origins = [
         "https://travel-ecommerce-swart.vercel.app",
+        "https://travel-ecommerce-swart.vercel.app/",
         "http://localhost:3000",
         "http://localhost:3001"
     ]
