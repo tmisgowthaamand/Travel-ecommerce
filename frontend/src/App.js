@@ -23,6 +23,7 @@ import ShopHomePage from "./pages/ShopHomePage";
 import CategoryPage from "./pages/CategoryPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
+import SearchPage from "./pages/SearchPage";
 
 // Combined Views
 import MyBookingsPage from "./pages/MyBookingsPage";
@@ -42,6 +43,8 @@ function App() {
               {/* Auth */}
               <Route path="/login" element={<AuthPage mode="login" />} />
               <Route path="/register" element={<AuthPage mode="register" />} />
+              <Route path="/forgot-password" element={<AuthPage mode="forgot" />} />
+              <Route path="/reset-password" element={<AuthPage mode="reset" />} />
 
 
 
@@ -125,6 +128,7 @@ function App() {
               <Route path="/shop/category/:category" element={<CategoryPage />} />
               <Route path="/shop/product/:productId" element={<ProductDetailPage />} />
               <Route path="/shop/cart" element={<CartPage />} />
+              <Route path="/shop/search" element={<SearchPage />} />
 
               {/* Combined Views */}
               <Route path="/my-bookings" element={<MyBookingsPage />} />

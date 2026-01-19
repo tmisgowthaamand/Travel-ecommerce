@@ -9,6 +9,9 @@ const ShopHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
@@ -34,6 +37,15 @@ const ShopHeader = () => {
     logout();
     setUserMenuOpen(false);
     navigate('/');
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
   };
 
   return (
@@ -103,14 +115,35 @@ const ShopHeader = () => {
             </Link>
 
             {/* Search */}
-            <button
-              className={cn(
-                'p-2 rounded-full transition-colors',
-                isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+            <div className="relative flex items-center">
+              {isSearchOpen && (
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className="absolute right-full mr-2 animate-fade-in"
+                >
+                  <input
+                    type="text"
+                    autoFocus
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search characters or gear..."
+                    className={cn(
+                      "w-48 lg:w-64 px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all font-light",
+                      isScrolled ? "bg-gray-100 text-gray-900 border-gray-200" : "bg-white/10 text-white border-white/20 backdrop-blur-md"
+                    )}
+                  />
+                </form>
               )}
-            >
-              <Search className="w-5 h-5" />
-            </button>
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={cn(
+                  'p-2 rounded-full transition-colors',
+                  isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+                )}
+              >
+                {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+              </button>
+            </div>
 
             {/* Wishlist */}
             <button

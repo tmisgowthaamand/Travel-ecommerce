@@ -132,11 +132,15 @@ class Order(BaseModel):
     tax: float = 0.0
     total: float
     shipping_address: dict
+    payment_method: str = "cod" # 'card', 'cod'
+    payment_status: str = "pending"
     status: str = "pending"
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class OrderCreate(BaseModel):
     shipping_address: dict
+    payment_method: str
+    payment_details: Optional[dict] = None
 
 # Contact Models
 class ContactSubmission(BaseModel):
@@ -149,6 +153,14 @@ class ContactSubmission(BaseModel):
     message: str
     newsletter: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+# Recovery Models
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
 
 # ================== AUTH HELPERS ==================
 
@@ -255,6 +267,49 @@ async def get_me(user = Depends(get_current_user)):
         name=user["name"],
         created_at=datetime.fromisoformat(user["created_at"]) if isinstance(user["created_at"], str) else user["created_at"]
     )
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest):
+    user = await db.users.find_one({"email": request.email})
+    if not user:
+        # For security, don't reveal if user exists, but for this demo we'll just say it's sent
+        return {"message": "If your email is registered, you will receive a recovery token."}
+    
+    # Generate a simple 6-digit token for this demo
+    import random
+    reset_token = "".join([str(random.randint(0, 9)) for _ in range(6)])
+    expiry = datetime.now(timezone.utc) + timedelta(minutes=15)
+    
+    await db.users.update_one(
+        {"email": request.email},
+        {"$set": {
+            "reset_token": reset_token,
+            "reset_token_expiry": expiry.isoformat()
+        }}
+    )
+    
+    # In a real app, send email. Here we return it for the user to "see" it in the demo
+    # or just log it. I'll return it in the message for easy testing by the user.
+    return {"message": f"Recovery token sent to your email. (DEMO TOKEN: {reset_token})"}
+
+@api_router.post("/auth/reset-password")
+async def reset_password(request: ResetPasswordRequest):
+    user = await db.users.find_one({
+        "reset_token": request.token,
+        "reset_token_expiry": {"$gt": datetime.now(timezone.utc).isoformat()}
+    })
+    
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid or expired recovery token")
+    
+    # Update password and clear token
+    new_hashed_password = hash_password(request.new_password)
+    await db.users.update_one(
+        {"id": user["id"]},
+        {"$set": {"password": new_hashed_password}, "$unset": {"reset_token": "", "reset_token_expiry": ""}}
+    )
+    
+    return {"message": "Password updated successfully"}
 
 # ================== PRODUCT ROUTES ==================
 
@@ -421,6 +476,8 @@ async def create_order(order_data: OrderCreate, user = Depends(get_current_user)
         tax=tax,
         total=total,
         shipping_address=order_data.shipping_address,
+        payment_method=order_data.payment_method,
+        payment_status="paid" if order_data.payment_method == "card" else "pending",
         status="confirmed"
     )
     

@@ -77,7 +77,7 @@ const MyBookingsPage = () => {
         <div className="max-w-[1600px] mx-auto">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="flex items-center gap-8">
-              <Link to="/" className="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-[#C9A87C] hover:border-[#C9A87C] transition-all">
+              <Link to="/shop" className="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-[#C9A87C] hover:border-[#C9A87C] transition-all">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
@@ -207,9 +207,14 @@ const MyBookingsPage = () => {
                         <h3 className="font-serif text-3xl text-[#1A1A1A] italic font-light">Order #{item.id.slice(0, 8)}</h3>
                         <p className="text-[10px] tracking-[0.15em] font-bold text-gray-400 uppercase">Registered on {formatDate(item.created_at)}</p>
                       </div>
-                      <div className="lg:col-span-3 text-right space-y-6">
+                      <div className="lg:col-span-3 text-right space-y-4">
                         <p className="font-serif text-2xl text-[#1A1A1A] italic">${item.total.toFixed(2)}</p>
-                        <p className="text-[9px] tracking-[0.2em] text-gray-300 font-bold uppercase">To be delivered to {item.shipping_address?.city}</p>
+                        <div className="flex flex-col items-end gap-2">
+                          <span className="text-[8px] tracking-[0.2em] px-3 py-1 bg-gray-50 text-gray-400 font-black uppercase rounded-full border border-gray-100 italic">
+                            {item.payment_method === 'card' ? 'Settled via Card' : 'Settlement on Delivery'}
+                          </span>
+                          <p className="text-[9px] tracking-[0.2em] text-gray-300 font-bold uppercase">To be delivered to {item.shipping_address?.city}</p>
+                        </div>
                       </div>
                     </>
                   )}
