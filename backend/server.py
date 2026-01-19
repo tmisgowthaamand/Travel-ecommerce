@@ -13,6 +13,7 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import jwt
 import bcrypt
+import certifi
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -63,7 +64,14 @@ if "@" in mongo_url:
 
 print(f"DEBUG: Connecting to MongoDB at -> {safe_url}")
 
-client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
+# Use certifi for SSL/TLS verification to avoid handshake errors on Render
+ca = certifi.where()
+client = AsyncIOMotorClient(
+    mongo_url, 
+    serverSelectionTimeoutMS=5000,
+    tlsCAFile=ca,
+    tls=True if "mongodb+srv" in mongo_url else None
+)
 db_name = os.environ.get('DB_NAME', 'Travel-ecommerce')
 db = client[db_name]
 print(f"DEBUG: Using database -> {db_name}")
