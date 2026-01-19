@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
@@ -151,6 +152,14 @@ async def cors_debug_middleware(request: Request, call_next):
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
+
+# Static files - mount the 'images' directory if it exists
+# Create images dir if not exists to avoid startup error
+images_path = Path("images")
+if not images_path.exists():
+    images_path.mkdir(parents=True, exist_ok=True)
+    
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 security = HTTPBearer(auto_error=False)
 

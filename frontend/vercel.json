@@ -3,7 +3,24 @@
     "buildCommand": "GENERATE_SOURCEMAP=false CI=false npm run build",
     "installCommand": "npm install --legacy-peer-deps",
     "cleanUrls": true,
+    "trailingSlash": false,
     "rewrites": [
+        {
+            "source": "/images/(.*)",
+            "destination": "/images/$1"
+        },
+        {
+            "source": "/static/(.*)",
+            "destination": "/static/$1"
+        },
+        {
+            "source": "/favicon.ico",
+            "destination": "/favicon.ico"
+        },
+        {
+            "source": "/manifest.json",
+            "destination": "/manifest.json"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"

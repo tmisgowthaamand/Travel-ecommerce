@@ -9,6 +9,13 @@ import { toast } from 'sonner';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Helper to get full image URL
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  if (imagePath.startsWith('http')) return imagePath;
+  return imagePath;
+};
+
 const ProductDetailPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -105,9 +112,13 @@ const ProductDetailPage = () => {
             <div className="relative">
               <div className="aspect-square rounded-3xl overflow-hidden bg-gray-100">
                 <img
-                  src={product.image}
+                  src={getImageUrl(product.image)}
                   alt={product.name}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80';
+                  }}
                 />
               </div>
               {product.original_price && (

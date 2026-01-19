@@ -9,6 +9,14 @@ import { toast } from 'sonner';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Helper to get full image URL
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  if (imagePath.startsWith('http')) return imagePath;
+  // If the path is relative, it will be served by Vercel from the public folder
+  return imagePath;
+};
+
 const ShopHomePage = () => {
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -187,9 +195,13 @@ const ShopHomePage = () => {
                   <Link to={`/shop/product/${product.id}`} className="block relative overflow-hidden rounded-2xl mb-4">
                     <div className="aspect-square bg-gray-100">
                       <img
-                        src={product.image}
+                        src={getImageUrl(product.image)}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80';
+                        }}
                       />
                     </div>
                     {product.original_price && (
@@ -261,9 +273,13 @@ const ShopHomePage = () => {
                   <Link to={`/shop/product/${product.id}`} className="block relative overflow-hidden rounded-xl mb-4">
                     <div className="aspect-square bg-gray-100">
                       <img
-                        src={product.image}
+                        src={getImageUrl(product.image)}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80';
+                        }}
                       />
                     </div>
                     {product.original_price && (
