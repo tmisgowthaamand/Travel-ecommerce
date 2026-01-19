@@ -19,7 +19,13 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ.get('MONGO_URL')
+if not mongo_url:
+    print("CRITICAL: MONGO_URL not found in environment variables.")
+    print("Please set MONGO_URL in your Render Dashboard (Environment tab).")
+    # Fallback only for local dev
+    mongo_url = "mongodb://localhost:27017/travel_ecommerce"
+
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'travel_ecommerce')]
 
