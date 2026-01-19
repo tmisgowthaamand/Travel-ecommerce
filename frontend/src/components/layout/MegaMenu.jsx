@@ -46,7 +46,7 @@ const MegaMenu = ({ items, isOpen, onClose }) => {
 
                     <div className="mt-auto pt-8 border-t border-gray-100">
                         <Link
-                            to="/all-experiences"
+                            to="/travel/experiences"
                             className="text-xs font-semibold tracking-widest text-[#C9A87C] hover:text-[#B08D55] flex items-center gap-2"
                         >
                             VIEW ALL <ArrowRight className="w-4 h-4" />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ShopHeader from '../components/shop/ShopHeader';
@@ -13,6 +13,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
+  if (imagePath.startsWith('/images/')) return imagePath;
   const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
   return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
@@ -27,12 +28,7 @@ const ProductDetailPage = () => {
   const { isAuthenticated } = useAuth();
   const { addToCart } = useCart();
 
-  useEffect(() => {
-    console.log('DEBUG: API_URL is', API_URL);
-    fetchProduct();
-  }, [productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const response = await axios.get(`${API_URL}/products/${productId}`);
       setProduct(response.data);
@@ -43,7 +39,12 @@ const ProductDetailPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId, navigate]);
+
+  useEffect(() => {
+    console.log('DEBUG: API_URL is', API_URL);
+    fetchProduct();
+  }, [fetchProduct, productId]);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {

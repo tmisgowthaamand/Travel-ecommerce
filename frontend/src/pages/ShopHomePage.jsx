@@ -14,7 +14,10 @@ const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
 
-  // Use the backend URL to fetch images
+  // For local paths like /images/products/..., return as is (relative to public folder)
+  if (imagePath.startsWith('/images/')) return imagePath;
+
+  // Use the backend URL to fetch images if it's a specific backend-hosted file
   const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
   return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
@@ -64,7 +67,7 @@ const ShopHomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <ShopHeader />
 
       {/* Hero Section */}
@@ -171,13 +174,13 @@ const ShopHomePage = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured Products</h2>
               <p className="text-gray-600">Our most popular travel essentials</p>
             </div>
-            <Link
-              to="/shop"
+            <button
+              onClick={() => document.getElementById('all-products')?.scrollIntoView({ behavior: 'smooth' })}
               className="hidden sm:flex items-center gap-2 text-amber-600 font-medium hover:text-amber-700 transition-colors"
             >
               View All
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
 
           {loading ? (
@@ -251,7 +254,7 @@ const ShopHomePage = () => {
       </section>
 
       {/* All Products */}
-      <section className="py-16">
+      <section id="all-products" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">All Products</h2>

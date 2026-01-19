@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import ShopHeader from '../components/shop/ShopHeader';
@@ -13,6 +13,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
+  if (imagePath.startsWith('/images/')) return imagePath;
   const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
   return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
@@ -25,12 +26,7 @@ const CategoryPage = () => {
   const { isAuthenticated } = useAuth();
   const { addToCart } = useCart();
 
-  useEffect(() => {
-    console.log('DEBUG: API_URL is', API_URL);
-    fetchProducts();
-  }, [category]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const url = category
@@ -43,7 +39,12 @@ const CategoryPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category]);
+
+  useEffect(() => {
+    console.log('DEBUG: API_URL is', API_URL);
+    fetchProducts();
+  }, [fetchProducts, category]);
 
   const handleAddToCart = async (product) => {
     if (!isAuthenticated) {
@@ -68,7 +69,7 @@ const CategoryPage = () => {
   const categoryTitle = category ? category.charAt(0).toUpperCase() + category.slice(1) : 'All Products';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <ShopHeader />
 
       {/* Hero */}

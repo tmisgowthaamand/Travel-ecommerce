@@ -5,12 +5,44 @@ import { cn } from '../../lib/utils';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 
+const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  if (imagePath.startsWith('http')) return imagePath;
+  // If it's a relative path, prepend the backend URL (minus /api) if it's served from backend
+  // or return as is if served from frontend public (depending on project setup).
+  // Safest for backend-served images in this context:
+  const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
+  return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+};
+
 const ShopHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (searchQuery.trim().length < 2) {
+        setSuggestions([]);
+        return;
+      }
+      try {
+        const response = await fetch(`${API_URL}/products?search=${encodeURIComponent(searchQuery)}`);
+        const data = await response.json();
+        setSuggestions(data);
+      } catch (error) {
+        console.error('Failed to fetch suggestions:', error);
+      }
+    };
+
+    const timeoutId = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -48,12 +80,15 @@ const ShopHeader = () => {
     }
   };
 
+  const isHome = location.pathname === '/shop';
+  const showDarkHeader = !isHome || isScrolled;
+
   return (
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled
-          ? 'bg-white shadow-md py-3'
+        showDarkHeader
+          ? 'bg-white/80 backdrop-blur-md shadow-sm py-3'
           : 'bg-gradient-to-b from-black/50 to-transparent py-4'
       )}
     >
@@ -63,16 +98,16 @@ const ShopHeader = () => {
           <Link to="/" className="flex items-center gap-3">
             <div className={cn(
               'w-10 h-10 rounded-full flex items-center justify-center transition-colors',
-              isScrolled ? 'bg-amber-100' : 'bg-white/20'
+              showDarkHeader ? 'bg-amber-100' : 'bg-white/20'
             )}>
               <span className={cn(
                 'font-serif text-lg font-medium',
-                isScrolled ? 'text-amber-800' : 'text-white'
+                showDarkHeader ? 'text-amber-800' : 'text-white'
               )}>W&C</span>
             </div>
             <span className={cn(
               'hidden sm:block text-lg font-medium tracking-wide transition-colors',
-              isScrolled ? 'text-gray-900' : 'text-white'
+              showDarkHeader ? 'text-gray-900' : 'text-white'
             )}>Travel Gear</span>
           </Link>
 
@@ -84,10 +119,10 @@ const ShopHeader = () => {
                 to={item.href}
                 className={cn(
                   'text-sm font-medium transition-all duration-300 relative py-1',
-                  isScrolled
+                  showDarkHeader
                     ? 'text-gray-700 hover:text-amber-600'
                     : 'text-white/90 hover:text-white',
-                  location.pathname === item.href && 'text-amber-600'
+                  location.pathname === item.href && (showDarkHeader ? 'text-amber-600' : 'text-white')
                 )}
               >
                 {item.label}
@@ -105,7 +140,8 @@ const ShopHeader = () => {
               to="/travel"
               className={cn(
                 'hidden md:flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
-                isScrolled
+                isSearchOpen && 'hidden md:hidden',
+                showDarkHeader
                   ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
                   : 'bg-white/20 text-white hover:bg-white/30'
               )}
@@ -117,28 +153,52 @@ const ShopHeader = () => {
             {/* Search */}
             <div className="relative flex items-center">
               {isSearchOpen && (
-                <form
-                  onSubmit={handleSearchSubmit}
-                  className="absolute right-full mr-2 animate-fade-in"
-                >
-                  <input
-                    type="text"
-                    autoFocus
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search characters or gear..."
-                    className={cn(
-                      "w-48 lg:w-64 px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all font-light",
-                      isScrolled ? "bg-gray-100 text-gray-900 border-gray-200" : "bg-white/10 text-white border-white/20 backdrop-blur-md"
+                <div className="absolute right-full mr-2 animate-fade-in group w-64">
+                  <form onSubmit={handleSearchSubmit} className="relative">
+                    <input
+                      type="text"
+                      autoFocus
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search characters or gear..."
+                      className={cn(
+                        "w-full px-4 py-2 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition-all font-light bg-white text-gray-900 border border-gray-200 shadow-sm"
+                      )}
+                    />
+                    {suggestions.length > 0 && searchQuery && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50 py-2">
+                        {suggestions.slice(0, 6).map((product) => (
+                          <button
+                            key={product.id}
+                            onClick={() => {
+                              navigate(`/shop/product/${product.id}`);
+                              setIsSearchOpen(false);
+                              setSearchQuery('');
+                              setSuggestions([]);
+                            }}
+                            className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center gap-3 transition-colors group/item"
+                          >
+                            <div className="w-8 h-8 rounded-md bg-gray-100 flex-shrink-0 overflow-hidden">
+                              <img src={getImageUrl(product.image)} alt="" className="w-full h-full object-cover" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-gray-900 font-medium truncate group-hover/item:text-amber-600 transition-colors">
+                                {product.name}
+                              </p>
+                              <p className="text-xs text-gray-500 truncate">{product.category}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
                     )}
-                  />
-                </form>
+                  </form>
+                </div>
               )}
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className={cn(
                   'p-2 rounded-full transition-colors',
-                  isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+                  showDarkHeader ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
                 )}
               >
                 {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
@@ -149,7 +209,7 @@ const ShopHeader = () => {
             <button
               className={cn(
                 'p-2 rounded-full transition-colors hidden sm:flex',
-                isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+                showDarkHeader ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
               )}
             >
               <Heart className="w-5 h-5" />
@@ -160,7 +220,7 @@ const ShopHeader = () => {
               to="/shop/cart"
               className={cn(
                 'p-2 rounded-full transition-colors relative',
-                isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+                showDarkHeader ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
               )}
             >
               <ShoppingCart className="w-5 h-5" />
@@ -178,7 +238,7 @@ const ShopHeader = () => {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className={cn(
                     'p-2 rounded-full transition-colors',
-                    isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
+                    showDarkHeader ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/20'
                   )}
                 >
                   <User className="w-5 h-5" />
@@ -211,7 +271,7 @@ const ShopHeader = () => {
                 to="/login"
                 className={cn(
                   'hidden sm:flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
-                  isScrolled
+                  showDarkHeader
                     ? 'bg-amber-600 text-white hover:bg-amber-700'
                     : 'bg-white text-gray-900 hover:bg-gray-100'
                 )}
@@ -225,7 +285,7 @@ const ShopHeader = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={cn(
                 'lg:hidden p-2 rounded-full transition-colors',
-                isScrolled ? 'text-gray-700' : 'text-white'
+                showDarkHeader ? 'text-gray-700' : 'text-white'
               )}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

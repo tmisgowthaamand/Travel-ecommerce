@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import ShopHeader from '../components/shop/ShopHeader';
@@ -8,6 +8,14 @@ import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+const getImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith('/images/')) return imagePath;
+    const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
+    return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+};
 
 const SearchPage = () => {
     const location = useLocation();
@@ -19,13 +27,7 @@ const SearchPage = () => {
     const { isAuthenticated } = useAuth();
     const { addToCart } = useCart();
 
-    useEffect(() => {
-        if (query) {
-            fetchResults();
-        }
-    }, [query]);
-
-    const fetchResults = async () => {
+    const fetchResults = useCallback(async () => {
         setLoading(true);
         try {
             const response = await axios.get(`${API_URL}/products?search=${encodeURIComponent(query)}`);
@@ -35,7 +37,13 @@ const SearchPage = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [query]);
+
+    useEffect(() => {
+        if (query) {
+            fetchResults();
+        }
+    }, [query, fetchResults]);
 
     const handleAddToCart = async (product) => {
         if (!isAuthenticated) {
@@ -49,7 +57,7 @@ const SearchPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50/50">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
             <ShopHeader />
 
             <div className="pt-32 pb-24">
@@ -102,9 +110,13 @@ const SearchPage = () => {
                                 <div key={product.id} className="group bg-white rounded-[40px] p-6 shadow-sm hover:shadow-2xl transition-all duration-700 border border-transparent hover:border-gray-50 flex flex-col">
                                     <Link to={`/shop/product/${product.id}`} className="block relative overflow-hidden rounded-[32px] mb-6 aspect-square grayscale group-hover:grayscale-0 transition-all duration-1000">
                                         <img
-                                            src={product.image}
+                                            src={getImageUrl(product.image)}
                                             alt={product.name}
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = 'https://images.unsplash.com/photo-1581553680321-4fffae59fccd?w=800&q=80';
+                                            }}
                                         />
                                         {product.original_price && (
                                             <span className="absolute top-6 left-6 px-4 py-2 bg-red-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg">
