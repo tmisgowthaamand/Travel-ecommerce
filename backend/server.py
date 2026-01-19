@@ -13,21 +13,35 @@ from datetime import datetime, timezone, timedelta
 import jwt
 import bcrypt
 # Trigger reload
-
-
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL')
+is_production = os.environ.get('RENDER') == 'true'
+
 if not mongo_url:
-    print("CRITICAL: MONGO_URL not found in environment variables.")
-    print("Please set MONGO_URL in your Render Dashboard (Environment tab).")
-    # Fallback only for local dev
+    if is_production:
+        print("CRITICAL ERROR: MONGO_URL environment variable is MISSING on Render!")
+        print("Application will likely fail to connect to any database.")
+    else:
+        print("WARNING: MONGO_URL not found. Falling back to localhost for development.")
     mongo_url = "mongodb://localhost:27017/travel_ecommerce"
 
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ.get('DB_NAME', 'travel_ecommerce')]
+# Sanitize URL for logging (hide credentials)
+safe_url = mongo_url
+if "@" in mongo_url:
+    parts = mongo_url.split("@")
+    safe_url = parts[0].split("//")[0] + "//****:****@" + parts[1]
+
+print(f"DEBUG: Connecting to MongoDB at -> {safe_url}")
+
+# Use a shorter timeout for server selection to fail-fast
+client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=5000)
+db_name = os.environ.get('DB_NAME', 'travel_ecommerce')
+db = client[db_name]
+print(f"DEBUG: Using database -> {db_name}")
 
 # JWT Configuration
 SECRET_KEY = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
@@ -1568,6 +1582,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+from fastapi.responses import JSONResponse
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=500,
+        content={"message": "Internal Server Error", "detail": str(exc)},
+    )
 
 # Configure logging
 logging.basicConfig(
