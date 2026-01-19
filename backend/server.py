@@ -1,4 +1,5 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, Request
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -12,6 +13,13 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import jwt
 import bcrypt
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # Trigger reload
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -67,6 +75,71 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
 # Create the main app
 app = FastAPI(title="Travel & E-commerce Combined Platform")
+
+# Standard origins
+base_origins = [
+    "https://travel-ecommerce-swart.vercel.app",
+    "https://travel-ecommerce-swart.vercel.app/",
+    "http://localhost:3000",
+    "http://localhost:3001",
+]
+
+# Add more Vercel variations and Render URLs
+allow_origins = base_origins.copy()
+env_origins_str = os.environ.get('CORS_ORIGINS', '')
+if env_origins_str:
+    if env_origins_str == '*':
+        # We will handle '*' manually in middleware to support allow_credentials=True
+        pass
+    else:
+        extra = [o.strip() for o in env_origins_str.split(',') if o.strip()]
+        for o in extra:
+            if o not in allow_origins:
+                allow_origins.append(o)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allow_origins if env_origins_str != '*' else allow_origins,
+    allow_origin_regex=r"https://travel-ecommerce-.*\.vercel\.app",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
+
+@app.middleware("http")
+async def cors_debug_middleware(request: Request, call_next):
+    origin = request.headers.get("origin")
+    method = request.method
+    path = request.url.path
+    
+    # Dynamic origin reflection for '*' or matching logic
+    is_allowed = False
+    if env_origins_str == '*':
+        is_allowed = True
+    elif origin in allow_origins:
+        is_allowed = True
+    elif origin and any(origin.startswith(o.rstrip('/')) for o in allow_origins):
+        is_allowed = True
+    elif origin and (".vercel.app" in origin):
+        is_allowed = True
+        
+    logger.info(f"CORS Request: {method} {path} | Origin: {origin} | Allowed: {is_allowed}")
+    
+    try:
+        response = await call_next(request)
+    except Exception as e:
+        logger.error(f"Execution Error in {path}: {str(e)}", exc_info=True)
+        response = JSONResponse(
+            status_code=500,
+            content={"message": "Internal Server Error", "detail": str(e)}
+        )
+    
+    if origin and is_allowed:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        
+    return response
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -581,8 +654,6 @@ async def cancel_booking(booking_id: str, user = Depends(get_current_user)):
     result = await db.bookings.delete_one({"id": booking_id, "user_id": user["id"]})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Booking not found")
-    return {"message": "Booking cancelled"}
-
     return {"message": "Booking cancelled"}
 
 @api_router.post("/contact")
@@ -1579,42 +1650,38 @@ app.include_router(api_router)
 async def health():
     return {"status": "online", "message": "Wanderlust & Co. API is operational"}
 
-# CORS configuration
-origins = os.environ.get('CORS_ORIGINS', '*').split(',')
-if "*" in origins:
-    # When using allow_credentials=True, origins cannot be ['*']
-    # We must list explicit origins.
-    allow_origins = [
-        "https://travel-ecommerce-swart.vercel.app",
-        "https://travel-ecommerce-swart.vercel.app/",
-        "http://localhost:3000",
-        "http://localhost:3001"
-    ]
-else:
-    allow_origins = origins
+# Basic Routes
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allow_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-from fastapi.responses import JSONResponse
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
-    return JSONResponse(
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled Error: {str(exc)}", exc_info=True)
+    origin = request.headers.get("origin")
+    response = JSONResponse(
         status_code=500,
-        content={"message": "Internal Server Error", "detail": str(exc)},
+        content={
+            "message": "Internal Server Error", 
+            "detail": str(exc),
+            "type": type(exc).__name__,
+            "path": request.url.path
+        },
     )
+    if origin:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    origin = request.headers.get("origin")
+    response = JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+    )
+    if origin:
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
