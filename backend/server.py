@@ -1538,6 +1538,10 @@ async def health_check():
 # Include the router in the main app
 app.include_router(api_router)
 
+@app.get("/")
+async def health():
+    return {"status": "online", "message": "Wanderlust & Co. API is operational"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
