@@ -13,8 +13,10 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
-  // If the path is relative, it will be served by Vercel from the public folder
-  return imagePath;
+
+  // Use the backend URL to fetch images
+  const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
+  return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
 
 const ShopHomePage = () => {

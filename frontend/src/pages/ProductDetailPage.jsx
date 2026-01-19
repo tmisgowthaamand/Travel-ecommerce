@@ -13,7 +13,8 @@ const API_URL = process.env.REACT_APP_BACKEND_URL;
 const getImageUrl = (imagePath) => {
   if (!imagePath) return '';
   if (imagePath.startsWith('http')) return imagePath;
-  return imagePath;
+  const baseUrl = API_URL ? API_URL.replace('/api', '') : '';
+  return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
 };
 
 const ProductDetailPage = () => {
@@ -27,6 +28,7 @@ const ProductDetailPage = () => {
   const { addToCart } = useCart();
 
   useEffect(() => {
+    console.log('DEBUG: API_URL is', API_URL);
     fetchProduct();
   }, [productId]);
 
