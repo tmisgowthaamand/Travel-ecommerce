@@ -1548,10 +1548,23 @@ app.include_router(api_router)
 async def health():
     return {"status": "online", "message": "Wanderlust & Co. API is operational"}
 
+# CORS configuration
+origins = os.environ.get('CORS_ORIGINS', '*').split(',')
+if "*" in origins:
+    # When using allow_credentials=True, origins cannot be ['*']
+    # We must list explicit origins.
+    allow_origins = [
+        "https://travel-ecommerce-swart.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:3001"
+    ]
+else:
+    allow_origins = origins
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=allow_origins,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
     allow_methods=["*"],
     allow_headers=["*"],
 )
